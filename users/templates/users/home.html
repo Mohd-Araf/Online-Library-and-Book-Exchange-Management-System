@@ -3,10 +3,29 @@
 
 {% block content %}
 <style>
+    /* Body */
     body {
         background: linear-gradient(135deg, #0f172a, #1e3a8a); /* Deep blue gradient */
         color: #f8fafc;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    /* Navbar font enhancements */
+    .navbar .nav-link {
+        font-size: 1.2rem; /* Bigger font */
+        font-weight: 600;  /* Semi-bold for visibility */
+        color: #f8fafc !important; /* Ensures white text on dark navbar */
+        transition: color 0.3s ease-in-out;
+    }
+
+    .navbar .nav-link:hover {
+        color: #60a5fa !important; /* Hover color effect */
+    }
+
+    .navbar-brand {
+        font-size: 1.5rem; /* Bigger brand/logo text */
+        font-weight: 700;
+        color: #fff !important;
     }
 
     /* Jumbotron */
@@ -93,10 +112,11 @@
 </style>
 
 <div class="container mt-5">
+    <!-- Jumbotron -->
     <div class="custom-jumbotron text-center">
         <h1 class="display-4">Welcome, {{ user.first_name|default:'Guest'|title }}</h1>
         <p class="lead">
-            📚 Discover, Buy & Exchange Books with ease! <br>
+            Discover, Buy & Exchange Books with ease! <br>
             A smart online library built just for passionate readers like you.
         </p>
         <hr class="my-4">
@@ -131,4 +151,4 @@
         </div>
     </div>
 </div>
-{% endblock content%}
+{% endblock content %}
