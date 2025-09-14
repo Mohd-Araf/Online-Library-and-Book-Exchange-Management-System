@@ -1,0 +1,85 @@
+{% extends "users/base.html" %}
+{% block title %}Buy Book{% endblock title %}
+
+{% block content %}
+<style>
+  .buy-container {
+    max-width: 600px;
+    margin: 40px auto; /* reduced top margin */
+    padding: 40px 50px;
+    background-color: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
+    transition: transform 0.3s ease;
+  }
+
+  .buy-container:hover {
+    transform: scale(1.02);
+  }
+
+  .buy-container h2 {
+    font-size: 32px;
+    text-align: center;
+    color: #6a1b9a;
+    margin-bottom: 25px;
+  }
+
+  .book-details {
+    text-align: center;
+    margin-bottom: 30px;
+  }
+
+  .book-details p {
+    font-size: 18px;
+    margin: 8px 0;
+    color: #333;
+  }
+
+  .book-details span {
+    color: #00796b;
+    font-weight: bold;
+  }
+
+  form {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  button {
+    padding: 14px 30px;
+    background: linear-gradient(to right, #7b1fa2, #4caf50);
+    color: #fff;
+    font-size: 18px;
+    border: none;
+    border-radius: 10px;
+    cursor: pointer;
+    transition: background 0.3s ease, transform 0.2s ease;
+  }
+
+  button:hover {
+    background: linear-gradient(to right, #6a1b9a, #388e3c);
+    transform: translateY(-2px);
+  }
+
+  @media (max-width: 600px) {
+    .buy-container {
+      padding: 30px 20px;
+      margin: 20px auto;
+    }
+  }
+</style>
+
+<div class="buy-container">
+  <h2>Buy Book</h2>
+  <div class="book-details">
+    <p><strong>Book:</strong> <span>{{ book.name }}</span></p>
+    <p><strong>Author:</strong> <span>{{ book.author }}</span></p>
+    <p><strong>Price:</strong> <span>{{ book.price }} ৳</span></p>
+  </div>
+  <form method="post">
+    {% csrf_token %}
+    <button type="submit">Confirm Purchase</button>
+  </form>
+</div>
+{% endblock %}

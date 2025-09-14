@@ -1,31 +1,13 @@
 {% extends "users/base.html" %}
-{% block title %} Home Page {% endblock title%}
+{% block title %} Home Page {% endblock title %}
 
 {% block content %}
 <style>
     /* Body */
     body {
-        background: linear-gradient(135deg, #0f172a, #1e3a8a); /* Deep blue gradient */
+        background: linear-gradient(135deg, #0f172a, #1e3a8a);
         color: #f8fafc;
         font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
-
-    /* Navbar font enhancements */
-    .navbar .nav-link {
-        font-size: 1.2rem; /* Bigger font */
-        font-weight: 600;  /* Semi-bold for visibility */
-        color: #f8fafc !important; /* Ensures white text on dark navbar */
-        transition: color 0.3s ease-in-out;
-    }
-
-    .navbar .nav-link:hover {
-        color: #60a5fa !important; /* Hover color effect */
-    }
-
-    .navbar-brand {
-        font-size: 1.5rem; /* Bigger brand/logo text */
-        font-weight: 700;
-        color: #fff !important;
     }
 
     /* Jumbotron */
@@ -35,6 +17,8 @@
         padding: 50px;
         box-shadow: 0 10px 25px rgba(0,0,0,0.3);
         animation: fadeIn 1.5s ease-in-out;
+        text-align: center;
+        color: #f8fafc;
     }
 
     /* Animated Heading */
@@ -54,22 +38,13 @@
         animation: fadeInUp 1.8s ease-in-out;
     }
 
-    /* Buttons */
-    .btn-custom {
-        background: #2563eb;
-        border: none;
-        border-radius: 30px;
-        padding: 12px 28px;
-        font-size: 1.1rem;
-        font-weight: 600;
-        color: #fff;
-        transition: all 0.3s ease-in-out;
-        box-shadow: 0 4px 15px rgba(37, 99, 235, 0.4);
+    /* Search Box */
+    .input-group .form-control {
+        border-radius: 30px 0 0 30px;
+        max-width: 400px;
     }
-    .btn-custom:hover {
-        background: #1e40af;
-        transform: scale(1.06);
-        box-shadow: 0 6px 20px rgba(37, 99, 235, 0.6);
+    .input-group .btn-custom {
+        border-radius: 0 30px 30px 0;
     }
 
     /* Feature Section */
@@ -113,39 +88,42 @@
 
 <div class="container mt-5">
     <!-- Jumbotron -->
-    <div class="custom-jumbotron text-center">
+    <div class="custom-jumbotron">
         <h1 class="display-4">Welcome, {{ user.first_name|default:'Guest'|title }}</h1>
         <p class="lead">
             Discover, Buy & Exchange Books with ease! <br>
             A smart online library built just for passionate readers like you.
         </p>
         <hr class="my-4">
-        <p class="lead">
-            {% if user.is_authenticated %}
-                <a class="btn btn-custom btn-lg" href="{% url 'logout' %}" role="button">🚪 Logout</a>
-            {% else %}
-                <a class="btn btn-custom btn-lg" href="{% url 'login' %}" role="button">🔑 Sign in</a>
-            {% endif %}
-        </p>
+
+        <!-- Search Box -->
+        <form method="get" action="{% url 'sell-book-list' %}">
+            <div class="input-group justify-content-center mt-3 mb-3">
+                <input type="text" name="q" class="form-control" placeholder="Search books by name or author" value="{{ request.GET.q }}">
+                <div class="input-group-append">
+                    <button class="btn btn-custom" type="submit">Search</button>
+                </div>
+            </div>
+        </form>
     </div>
 
     <!-- Feature Section -->
     <div class="row features text-center">
         <div class="col-md-4">
             <div class="feature-card">
-                <h3>📖 Huge Collection</h3>
+                <h3>Huge Collection</h3>
                 <p>Explore thousands of books across different genres and categories.</p>
             </div>
         </div>
         <div class="col-md-4">
             <div class="feature-card">
-                <h3>🤝 Easy Exchange</h3>
+                <h3>Easy Exchange</h3>
                 <p>Exchange your old books with others and discover something new.</p>
             </div>
         </div>
         <div class="col-md-4">
             <div class="feature-card">
-                <h3>⚡ Fast & Simple</h3>
+                <h3> Fast & Simple</h3>
                 <p>Seamless login and instant access to your favorite reads.</p>
             </div>
         </div>
