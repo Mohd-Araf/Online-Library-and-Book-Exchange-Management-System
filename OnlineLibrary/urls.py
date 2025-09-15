@@ -7,16 +7,29 @@ from django.conf.urls.static import static
 
 from django.contrib.auth import views as auth_views
 from users.views import CustomLoginView, ResetPasswordView, ChangePasswordView
-
+from users.views import profile
 from users.forms import LoginForm
+from django.contrib import admin
+from django.urls import path
+from django.shortcuts import render   # render import করতে হবে
+
+# Simple view function (app ছাড়াই rules.html দেখানোর জন্য)
+def rules_view(request):
+    return render(request, 'rules.html')
+
+
+
 
 urlpatterns = [
+    path('rules/', rules_view, name='rules'),
     path('admin/', admin.site.urls),
-
+path('rules/', rules_view, name='rules'),
     path('', include('users.urls')),
     path('', include('sell_books.urls')),
 
-    path('login/', CustomLoginView.as_view(redirect_authenticated_user=True, template_name='users/login.html',
+    path('profile/', profile, name='users-profile'),
+
+ path('login/', CustomLoginView.as_view(redirect_authenticated_user=True, template_name='users/login.html',
                                            authentication_form=LoginForm), name='login'),
 
     path('logout/', auth_views.LogoutView.as_view(template_name='users/logout.html'), name='logout'),

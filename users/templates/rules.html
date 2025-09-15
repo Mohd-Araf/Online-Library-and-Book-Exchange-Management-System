@@ -1,0 +1,113 @@
+{% extends "users/base.html" %}
+
+{% block title %}Library Rules - Online Library{% endblock %}
+
+{% block content %}
+<div class="container my-5">
+  <div class="text-center mb-5 fade-in">
+    <h1 class="font-weight-bold text-primary">Library Rules & Regulations</h1>
+    <p class="lead text-muted">University of Asia Pacific (UAP)</p>
+    <hr class="w-25 mx-auto" style="border-top: 3px solid #2a5298;">
+  </div>
+
+  <div class="row">
+    <!-- General Rules -->
+    <div class="col-md-6 mb-4">
+      <div class="card h-100 shadow-sm border-0 rounded-lg animated-card">
+        <div class="card-header bg-gradient-primary text-white text-center">
+          <h4 class="mb-0">General Rules</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled pl-3">
+            <li>1.Users must log in with a valid account to access the Online Library.</li>
+            <li>2.Maintain proper online etiquette while using the platform.</li>
+            <li>3.Sharing account credentials with others is strictly prohibited.</li>
+            <li>4.Respect the copyright and intellectual property of all digital materials.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Borrowing Rules -->
+    <div class="col-md-6 mb-4">
+      <div class="card h-100 shadow-sm border-0 rounded-lg animated-card">
+        <div class="card-header bg-gradient-secondary text-white text-center">
+          <h4 class="mb-0">Borrowing Rules</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled pl-3">
+            <li>1.Students may borrow up to <strong>3 books</strong> for 14 days.</li>
+            <li>2.Faculty may borrow up to <strong>10 books</strong> for one semester.</li>
+            <li>3.Reference books, journals & theses cannot be borrowed.</li>
+            <li>4.Late returns → Fine Tk. 5/day per book.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="row">
+    <!-- Use of Resources -->
+    <div class="col-md-6 mb-4">
+      <div class="card h-100 shadow-sm border-0 rounded-lg animated-card">
+        <div class="card-header bg-gradient-success text-white text-center">
+          <h4 class="mb-0">Use of Resources</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled pl-3">
+            <li>1.Computers are for academic purposes only.</li>
+            <li>2.Unauthorized downloads/installs are prohibited.</li>
+            <li>3.Digital resources must not be shared outside UAP.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+
+    <!-- Disciplinary Actions -->
+    <div class="col-md-6 mb-4">
+      <div class="card h-100 shadow-sm border-0 rounded-lg animated-card">
+        <div class="card-header bg-gradient-danger text-white text-center">
+          <h4 class="mb-0">Disciplinary Actions</h4>
+        </div>
+        <div class="card-body">
+          <ul class="list-unstyled pl-3">
+            <li>1.Any damage/loss of materials must be compensated.</li>
+            <li>2.Misbehavior may lead to suspension of privileges.</li>
+          </ul>
+        </div>
+      </div>
+    </div>
+  </div>
+
+  <div class="alert alert-info text-center mt-4 shadow-sm fade-in">
+    <strong>Note:</strong> Rules are subject to change as per UAP administration policy.
+  </div>
+</div>
+
+<style>
+  /* Gradient variations */
+  .bg-gradient-primary { background: linear-gradient(to right, #1e3c72, #2a5298); }
+  .bg-gradient-secondary { background: linear-gradient(to right, #283048, #859398); }
+  .bg-gradient-success { background: linear-gradient(to right, #134E5E, #71B280); }
+  .bg-gradient-danger { background: linear-gradient(to right, #93291E, #ED213A); }
+
+  /* Card hover animation */
+  .animated-card {
+    transition: all 0.4s ease-in-out;
+    transform: translateY(0px);
+  }
+  .animated-card:hover {
+    transform: translateY(-8px) scale(1.02);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.2);
+  }
+
+  /* Fade-in animation */
+  .fade-in {
+    opacity: 0;
+    animation: fadeIn 1.2s forwards;
+  }
+  @keyframes fadeIn {
+    to { opacity: 1; }
+  }
+</style>
+{% endblock %}
