@@ -1,0 +1,8 @@
+{% extends "users/base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Search Exchangeable Books</h2>
+    <p>You can exchange your books here. Choose the offered and requested books from admin-provided list.</p>
+    <a href="{% url 'exchangebook:exchange' %}" class="btn btn-primary">Go to Exchange Form</a>
+</div>
+{% endblock %}

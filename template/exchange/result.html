@@ -1,0 +1,11 @@
+{% extends "users/base.html" %}
+{% block content %}
+<div class="container mt-4">
+    <h2>Exchange Result</h2>
+    <p><b>Offered Book:</b> {{ exchange.offered_book.title }} (Base: {{ exchange.offered_book.base_price }})</p>
+    <p><b>Requested Book:</b> {{ exchange.requested_book.title }} (Base: {{ exchange.requested_book.base_price }})</p>
+    <p><b>Calculated Offered Price:</b> {{ exchange.calculated_price }}</p>
+    <p><b>Final Payment Required:</b> {{ exchange.final_payment }}</p>
+    <a href="{% url 'exchangebook:exchange' %}" class="btn btn-primary">Make Another Exchange</a>
+</div>
+{% endblock %}

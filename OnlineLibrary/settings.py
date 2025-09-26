@@ -46,6 +46,7 @@ INSTALLED_APPS = [
     'social_django',
     'users',
     'sell_books',
+    'exchangebook',
 ]
 
 MIDDLEWARE = [

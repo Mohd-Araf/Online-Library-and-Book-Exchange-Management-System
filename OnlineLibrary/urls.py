@@ -26,6 +26,9 @@ urlpatterns = [
 path('rules/', rules_view, name='rules'),
     path('', include('users.urls')),
     path('', include('sell_books.urls')),
+    path('exchange/', include('exchangebook.urls')),
+
+    path('accounts/', include('django.contrib.auth.urls')),
 
     path('profile/', profile, name='users-profile'),
 
