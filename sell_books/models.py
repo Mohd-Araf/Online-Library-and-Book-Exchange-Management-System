@@ -14,7 +14,7 @@ class SellBook(models.Model):
     author = models.CharField(max_length=100, blank=True, null=True)
     price = models.DecimalField(max_digits=8, decimal_places=2)
     image = models.ImageField(upload_to='sell_book_images/', blank=True, null=True)
-    pdf = models.FileField(upload_to='sell_books_pdf/', blank=True, null=True)
+
 
     def __str__(self):
         return self.name

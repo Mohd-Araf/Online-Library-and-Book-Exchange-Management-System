@@ -187,18 +187,30 @@
       <div class="info-card">
         <i class="fas fa-phone-alt"></i>
         <h4>Call Us</h4>
-        <p>+880 1234-567890</p>
+        <p>+880 1403181484</p>
       </div>
       <div class="info-card">
         <i class="fas fa-envelope"></i>
         <h4>Email Us</h4>
-        <p>support@example.com</p>
+        <p>22201138@uap-bd.edu</p>
       </div>
     </div>
 
     <!-- Contact Form -->
     <div class="contact-form">
       <h3>Send Us a Message</h3>
+
+      <!-- ✅ Messages Show Here -->
+      {% if messages %}
+        <div style="text-align:center; margin-bottom:20px;">
+          {% for message in messages %}
+            <p style="color: {% if message.tags == 'success' %}green{% else %}red{% endif %};">
+              {{ message }}
+            </p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
       <form method="post" class="form-grid">
         {% csrf_token %}
         <div class="form-group">

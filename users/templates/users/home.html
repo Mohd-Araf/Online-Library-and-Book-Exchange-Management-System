@@ -2,6 +2,50 @@
 {% block title %} Home Page {% endblock title %}
 
 {% block content %}
+
+<div class="container mt-5">
+    <!-- Jumbotron -->
+    <div class="custom-jumbotron">
+        <h1 class="display-4">Welcome, {{ user.first_name|default:'Guest'|title }}</h1>
+        <p class="lead">
+            Discover, Buy & Exchange Books with ease! <br>
+            A smart online library built just for passionate readers like you.
+        </p>
+        <hr class="my-4">
+
+        <!-- Search Box -->
+        <form method="get" action="{% url 'sell-book-list' %}">
+            <div class="input-group justify-content-center mt-3 mb-3">
+                <input type="text" name="q" class="form-control" placeholder="Search books by name or author" value="{{ request.GET.q }}">
+                <div class="input-group-append">
+                    <button class="btn btn-custom" type="submit">Search</button>
+                </div>
+            </div>
+        </form>
+    </div>
+
+    <!-- Feature Section -->
+    <div class="row features text-center">
+        <div class="col-md-4">
+            <div class="feature-card">
+                <h3>Huge Collection</h3>
+                <p>Explore thousands of books across different genres and categories.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card">
+                <h3>Easy Exchange</h3>
+                <p>Exchange your old books with others and discover something new.</p>
+            </div>
+        </div>
+        <div class="col-md-4">
+            <div class="feature-card">
+                <h3> Fast & Simple</h3>
+                <p>Seamless login and instant access to your favorite reads.</p>
+            </div>
+        </div>
+    </div>
+</div>
 <style>
     /* Body */
     body {
@@ -85,48 +129,4 @@
         to { text-shadow: 0 0 20px #60a5fa, 0 0 30px #3b82f6; }
     }
 </style>
-
-<div class="container mt-5">
-    <!-- Jumbotron -->
-    <div class="custom-jumbotron">
-        <h1 class="display-4">Welcome, {{ user.first_name|default:'Guest'|title }}</h1>
-        <p class="lead">
-            Discover, Buy & Exchange Books with ease! <br>
-            A smart online library built just for passionate readers like you.
-        </p>
-        <hr class="my-4">
-
-        <!-- Search Box -->
-        <form method="get" action="{% url 'sell-book-list' %}">
-            <div class="input-group justify-content-center mt-3 mb-3">
-                <input type="text" name="q" class="form-control" placeholder="Search books by name or author" value="{{ request.GET.q }}">
-                <div class="input-group-append">
-                    <button class="btn btn-custom" type="submit">Search</button>
-                </div>
-            </div>
-        </form>
-    </div>
-
-    <!-- Feature Section -->
-    <div class="row features text-center">
-        <div class="col-md-4">
-            <div class="feature-card">
-                <h3>Huge Collection</h3>
-                <p>Explore thousands of books across different genres and categories.</p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="feature-card">
-                <h3>Easy Exchange</h3>
-                <p>Exchange your old books with others and discover something new.</p>
-            </div>
-        </div>
-        <div class="col-md-4">
-            <div class="feature-card">
-                <h3> Fast & Simple</h3>
-                <p>Seamless login and instant access to your favorite reads.</p>
-            </div>
-        </div>
-    </div>
-</div>
 {% endblock content %}

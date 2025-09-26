@@ -3,9 +3,7 @@
 
 {% block content %}
 <style>
-/* ------------------------------ */
-/* Page & Body Styles */
-/* ------------------------------ */
+
 .content-wrapper {
   font-family: 'Segoe UI', sans-serif;
   background: linear-gradient(120deg, #fdfbfb 0%, #ebedee 100%);
@@ -13,8 +11,6 @@
   padding: 20px 40px;
 }
 
-/* ------------------------------ */
-/* Page Title */
 h1 {
   text-align: center;
   margin-bottom: 30px;
@@ -27,11 +23,9 @@ h1 {
 }
 
 h1 img {
-  height: 50px;
+  height: 80px;
 }
 
-/* ------------------------------ */
-/* Search Box */
 .search-box {
   max-width: 500px;
   margin: 0 auto 30px auto;
@@ -63,7 +57,7 @@ h1 img {
   transform: scale(1.05);
 }
 
-/* ------------------------------ */
+
 /* Book Container & Cards */
 .book-wrapper {
   max-height: calc(100vh - 200px);
@@ -160,8 +154,6 @@ h1 img {
   transform: scale(1.05);
 }
 
-/* ------------------------------ */
-/* Responsive Styles */
 @media (max-width: 1200px) {
   .book-container {
     grid-template-columns: repeat(3, 1fr); /* 3 per row on large screens */
@@ -180,7 +172,7 @@ h1 img {
   }
 }
 
-/* ------------------------------ */
+
 /* Footer */
 footer {
   margin-top: 40px;
@@ -196,7 +188,7 @@ footer {
 
 <div class="content-wrapper">
   <h1>
-    <img src="https://upload.wikimedia.org/wikipedia/en/d/d7/University_of_Asia_Pacific_%28Bangladesh%29_logo.png" alt="UAP Logo">
+    <img src="{{ MEDIA_URL }}Image/Logo.jpg" alt="Logo">
     Available Books for Sale
   </h1>
 

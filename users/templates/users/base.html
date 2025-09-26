@@ -3,133 +3,23 @@
 <head>
   <meta charset="utf-8">
   <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
-
-  <!-- Bootstrap CSS -->
   <link rel="stylesheet" href="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/css/bootstrap.min.css">
-  <!-- Font Awesome -->
   <link rel="stylesheet" href="https://use.fontawesome.com/releases/v5.8.2/css/all.css">
-
   <title>{% block title %}Online Library{% endblock %}</title>
-
-  <style>
-    /* Navbar */
-    .navbar {
-      background: linear-gradient(to right, #1e3c72, #2a5298);
-      padding: 1rem 2rem;
-      box-shadow: 0 4px 12px rgba(0,0,0,0.2);
-      font-family: 'Segoe UI', sans-serif;
-    }
-
-    /* Left: Logo + Name */
-    .navbar-left {
-      display: flex;
-      align-items: center;
-    }
-    .navbar-left .logo {
-      height: 50px;
-      margin-right: 12px;
-      border-radius: 6px;
-      border: 2px solid rgba(255,255,255,0.6);
-    }
-    .navbar-left .library-name {
-      font-weight: 800;
-      font-size: 1.6rem;
-      color: #fff;
-      letter-spacing: 1px;
-      text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
-    }
-
-    /* Center Menu */
-    .navbar-center {
-      position: absolute;
-      left: 50%;
-      transform: translateX(-50%);
-    }
-    .navbar-center .nav-link {
-      font-weight: 600;
-      font-size: 1.1rem;
-      color: #fff;
-      margin: 0 18px;
-      padding: 10px 20px;
-      border-radius: 8px;
-      transition: all 0.3s ease;
-      text-shadow: 0 1px 3px rgba(0,0,0,0.3);
-    }
-    .navbar-center .nav-link:hover {
-      background-color: rgba(255,255,255,0.25);
-      color: #ffd700;
-      transform: translateY(-3px);
-      box-shadow: 0 4px 10px rgba(255,215,0,0.4);
-    }
-
-    /* Right: Sign in / Profile buttons */
-    .navbar-right .btn-custom {
-      margin-left: 12px;
-      font-weight: 600;
-      font-size: 1rem;
-      color: #fff;
-      background: linear-gradient(to right, #ff7e5f, #feb47b);
-      border: none;
-      border-radius: 25px;
-      padding: 8px 22px;
-      transition: all 0.3s ease;
-    }
-    .navbar-right .btn-custom:hover {
-      background: linear-gradient(to right, #feb47b, #ff7e5f);
-      transform: translateY(-2px);
-      box-shadow: 0 4px 12px rgba(255,126,95,0.5);
-      color: #fff;
-    }
-
-    /* Footer */
-    footer {
-      background-color: #1e3c72;
-      color: #fff;
-      padding: 30px 0;
-      font-size: 0.9rem;
-    }
-    footer a {
-      color: #ffd700;
-      transition: 0.3s;
-    }
-    footer a:hover {
-      text-decoration: underline;
-      color: #fff;
-    }
-    footer .footer-links {
-      margin-bottom: 15px;
-    }
-
-    /* Responsive */
-    @media (max-width: 767px) {
-      .navbar-center {
-        position: static;
-        transform: none;
-        margin-top: 10px;
-        text-align: center;
-      }
-      .navbar-left,
-      .navbar-right {
-        justify-content: center;
-        margin-bottom: 10px;
-      }
-    }
-  </style>
 </head>
 <body>
 
-<!-- Navbar -->
 <nav class="navbar navbar-expand-md navbar-light">
-  <!-- Left: Logo + Name -->
   <div class="navbar-left">
-    <img src="#" alt="Logo" class="logo">
+    <img src="{{ MEDIA_URL }}Image/Logo.jpg" alt="Logo" class="logo">
+
     <span class="library-name">Online Library</span>
   </div>
 
-  <!-- Center Menu -->
   <button class="navbar-toggler" type="button" data-toggle="collapse" data-target="#navbarCenter">
     <span class="navbar-toggler-icon"></span>
   </button>
+
   <div class="collapse navbar-collapse justify-content-center navbar-center" id="navbarCenter">
     <div class="navbar-nav">
       <a href="/" class="nav-item nav-link">Home</a>
@@ -140,18 +30,19 @@
     </div>
   </div>
 
-  <!-- Right: Sign in / Profile -->
   <div class="navbar-right navbar-nav ml-auto">
     {% if user.is_authenticated %}
       <a href="{% url 'users-profile' %}" class="btn btn-custom">Profile</a>
-      <a href="{% url 'login' %}" class="btn btn-custom">Logout</a>
+      <form method="POST" action="{% url 'logout' %}" style="display:inline;">
+        {% csrf_token %}
+        <button type="submit" class="btn btn-custom">Logout</button>
+      </form>
     {% else %}
       <a href="{% url 'login' %}" class="btn btn-custom">Sign in</a>
     {% endif %}
   </div>
 </nav>
 
-<!-- Flash Messages -->
 {% if messages %}
 <div class="container mt-3">
   {% for message in messages %}
@@ -165,7 +56,6 @@
 
 {% block content %}{% endblock %}
 
-<!-- Footer -->
 <footer>
   <div class="container text-center text-md-left">
     <div class="row">
@@ -173,14 +63,15 @@
         <h5>Online Library</h5>
         <p>Your gateway to knowledge. Buy, exchange, and enjoy the best books available.</p>
       </div>
-      <div class="col-md-4 footer-links">
-        <h5>Quick Links</h5>
-        <a href="#">Home</a> |
-        <a href="#">Buy Books</a> |
-        <a href="#">Exchange Books</a> |
-        <a href="#">Rules</a> |
-        <a href="#">Contact</a>
-      </div>
+<div class="col-md-4 footer-links">
+    <h5>Quick Links</h5>
+    <a href="{% url 'users-home' %}">Home</a> |
+    <a href="{% url 'sell-book-list' %}">Buy Books</a> |
+    <a href="{% url 'exchangebook:exchange' %}">Exchange Books</a> |
+    <a href="{% url 'rules' %}">Rules</a> |
+    <a href="{% url 'contact' %}">Contact</a>
+</div>
+
       <div class="col-md-4">
         <h5>Contact</h5>
         <p><i class="fas fa-envelope"></i> onlinelibrary@gmail.com</p>
@@ -193,7 +84,113 @@
   </div>
 </footer>
 
-<!-- JS -->
+<style>
+.navbar {
+  background: linear-gradient(to right, #1e3c72, #2a5298);
+  padding: 1rem 2rem;
+  box-shadow: 0 4px 12px rgba(0,0,0,0.2);
+  font-family: 'Segoe UI', sans-serif;
+}
+
+.navbar-left {
+  display: flex;
+  align-items: center;
+}
+
+.navbar-left .logo {
+  height: 50px;
+  margin-right: 12px;
+  border-radius: 6px;
+  border: 2px solid rgba(255,255,255,0.6);
+}
+
+.navbar-left .library-name {
+  font-weight: 800;
+  font-size: 1.6rem;
+  color: #fff;
+  letter-spacing: 1px;
+  text-shadow: 1px 1px 3px rgba(0,0,0,0.4);
+}
+
+.navbar-center {
+  position: absolute;
+  left: 50%;
+  transform: translateX(-50%);
+}
+
+.navbar-center .nav-link {
+  font-weight: 600;
+  font-size: 1.1rem;
+  color: #fff;
+  margin: 0 18px;
+  padding: 10px 20px;
+  border-radius: 8px;
+  transition: all 0.3s ease;
+  text-shadow: 0 1px 3px rgba(0,0,0,0.3);
+}
+
+.navbar-center .nav-link:hover {
+  background-color: rgba(255,255,255,0.25);
+  color: #ffd700;
+  transform: translateY(-3px);
+  box-shadow: 0 4px 10px rgba(255,215,0,0.4);
+}
+
+.navbar-right .btn-custom {
+  margin-left: 12px;
+  font-weight: 600;
+  font-size: 1rem;
+  color: #fff;
+  background: linear-gradient(to right, #ff7e5f, #feb47b);
+  border: none;
+  border-radius: 25px;
+  padding: 8px 22px;
+  transition: all 0.3s ease;
+}
+
+.navbar-right .btn-custom:hover {
+  background: linear-gradient(to right, #feb47b, #ff7e5f);
+  transform: translateY(-2px);
+  box-shadow: 0 4px 12px rgba(255,126,95,0.5);
+  color: #fff;
+}
+
+footer {
+  background-color: #1e3c72;
+  color: #fff;
+  padding: 30px 0;
+  font-size: 0.9rem;
+}
+
+footer a {
+  color: #ffd700;
+  transition: 0.3s;
+}
+
+footer a:hover {
+  text-decoration: underline;
+  color: #fff;
+}
+
+footer .footer-links {
+  margin-bottom: 15px;
+}
+
+@media (max-width: 767px) {
+  .navbar-center {
+    position: static;
+    transform: none;
+    margin-top: 10px;
+    text-align: center;
+  }
+  .navbar-left,
+  .navbar-right {
+    justify-content: center;
+    margin-bottom: 10px;
+  }
+}
+</style>
+
 <script src="https://code.jquery.com/jquery-3.2.1.slim.min.js"></script>
 <script src="https://cdnjs.cloudflare.com/ajax/libs/popper.js/1.12.9/umd/popper.min.js"></script>
 <script src="https://maxcdn.bootstrapcdn.com/bootstrap/4.0.0/js/bootstrap.min.js"></script>

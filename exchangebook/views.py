@@ -15,7 +15,9 @@ def exchange_book(request):
 
             # Offered book base price
             base_price = exchange.offered_book.base_price
-            offered_price = base_price * 0.5  # 50% cut
+
+            #50% cut
+            offered_price = base_price * 0.5
 
             # Pages missing → 2% cut each
             offered_price -= (exchange.pages_missing * (base_price * 0.02))
