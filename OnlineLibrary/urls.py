@@ -21,6 +21,7 @@ def rules_view(request):
 
 
 urlpatterns = [
+    path('contactus/', contact_view,name='contact'),
     path('rules/', rules_view, name='rules'),
     path('admin/', admin.site.urls),
 path('rules/', rules_view, name='rules'),
