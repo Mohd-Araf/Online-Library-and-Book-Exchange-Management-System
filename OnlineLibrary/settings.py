@@ -134,14 +134,12 @@ SOCIAL_AUTH_GITHUB_SECRET = str(os.getenv('GITHUB_SECRET'))
 
 SESSION_COOKIE_AGE = 60 * 60 * 24 * 30
 
-
-
 DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
 EMAIL_HOST = 'smtp.gmail.com'
 EMAIL_USE_TLS = True
 EMAIL_PORT = 587
 EMAIL_HOST_USER = '22201138@uap-bd.edu'
-EMAIL_HOST_PASSWORD = 'your_app_password'
+EMAIL_HOST_PASSWORD = 'bdas zsrb fxjv jjtq'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
 
