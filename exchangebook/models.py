@@ -1,6 +1,8 @@
 from django.db import models
+from django.contrib.auth.models import User  # Import User model
 
 class OfferedBook(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="offered_books") # Owner
     title = models.CharField(max_length=200)
     base_price = models.PositiveIntegerField()
     edition = models.PositiveIntegerField(default=1)
@@ -11,6 +13,7 @@ class OfferedBook(models.Model):
 
 
 class RequestedBook(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="exchanges")
     title = models.CharField(max_length=200)
     base_price = models.PositiveIntegerField()
     edition = models.PositiveIntegerField(default=1)
@@ -20,11 +23,13 @@ class RequestedBook(models.Model):
 
 
 class ExchangeRequest(models.Model):
+    user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="exchange_requests")
+
     offered_book = models.ForeignKey(OfferedBook, on_delete=models.CASCADE)
     requested_book = models.ForeignKey(RequestedBook, on_delete=models.CASCADE)
 
     pages_missing = models.PositiveIntegerField()
-    edition_difference = models.PositiveIntegerField()
+    edition_difference = models.PositiveIntegerField(blank=True, null=True)
 
     font_side_picture = models.ImageField(upload_to="exchange_books/", default="exchange_books/default.jpg")
     back_side_picture = models.ImageField(upload_to="exchange_books/", default="exchange_books/default.jpg")
@@ -41,10 +46,10 @@ class ExchangeRequest(models.Model):
     calculated_price = models.PositiveIntegerField(null=True, blank=True)
     final_payment = models.IntegerField(null=True, blank=True)
 
-    def calculate_edition_difference(self):
-        offered_edition = self.offered_book.edition or 1
-        requested_edition = self.requested_book.edition or 1
-        return abs(offered_edition - requested_edition)
+    def save(self, *args, **kwargs):
+        # Auto-calculate edition_difference
+        self.edition_difference = abs(self.offered_book.edition - self.requested_book.edition)
+        super().save(*args, **kwargs)
 
     def __str__(self):
         return f"Exchange {self.offered_book.title} → {self.requested_book.title}"

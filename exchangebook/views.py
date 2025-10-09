@@ -11,14 +11,17 @@ def exchange_book(request):
     if request.method == "POST":
         form = ExchangeRequestForm(request.POST, request.FILES)
         if form.is_valid():
+            # Assign the logged-in user when saving
             exchange = form.save(commit=False)
+            exchange.user = request.user
 
-
+            # --- Price calculation ---
             base_price = exchange.offered_book.base_price
             offered_price = base_price * 0.6
+
             offered_edition = exchange.offered_book.edition or 1
             requested_edition = exchange.requested_book.edition or 1
-            edition_diff = abs(requested_edition - offered_edition )
+            edition_diff = abs(requested_edition - offered_edition)
             offered_price -= (base_price * 0.05 * edition_diff)
 
             total_pages = exchange.offered_book.total_pages or 100
@@ -33,14 +36,13 @@ def exchange_book(request):
                 offered_price -= base_price * 0.05
 
             # Prevent negative price
-            if offered_price < 0:
-                offered_price = 0
+            offered_price = max(0, offered_price)
 
             # Final payment calculation
             requested_price = exchange.requested_book.base_price
             final_payment = requested_price - offered_price
 
-            # Save
+            # Save calculated fields
             exchange.edition_difference = edition_diff
             exchange.calculated_price = int(offered_price)
             exchange.final_payment = int(final_payment)

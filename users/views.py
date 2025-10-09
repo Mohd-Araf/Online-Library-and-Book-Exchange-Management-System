@@ -5,6 +5,9 @@ from django.contrib import messages
 from django.contrib.messages.views import SuccessMessageMixin
 from django.views import View
 from django.contrib.auth.decorators import login_required
+
+from exchangebook.models import ExchangeRequest
+from sell_books.models import SellBook
 from .forms import RegisterForm, LoginForm, UpdateUserForm, UpdateProfileForm
 
 def home(request):
@@ -56,17 +59,38 @@ class ChangePasswordView(SuccessMessageMixin, PasswordChangeView):
     success_message = "Successfully Changed Your Password"
     success_url = reverse_lazy('users-home')
 
+
 @login_required
 def profile(request):
+    user = request.user
+
+    # Handle profile update
     if request.method == 'POST':
-        user_form = UpdateUserForm(request.POST, instance=request.user)
-        profile_form = UpdateProfileForm(request.POST, request.FILES, instance=request.user.profile)
+        user_form = UpdateUserForm(request.POST, instance=user)
+        profile_form = UpdateProfileForm(request.POST, request.FILES, instance=user.profile)
         if user_form.is_valid() and profile_form.is_valid():
             user_form.save()
             profile_form.save()
             messages.success(request, 'Your profile is updated successfully')
             return redirect(to='users-profile')
     else:
-        user_form = UpdateUserForm(instance=request.user)
-        profile_form = UpdateProfileForm(instance=request.user.profile)
-    return render(request, 'users/profile.html', {'user_form': user_form, 'profile_form': profile_form})
+        user_form = UpdateUserForm(instance=user)
+        profile_form = UpdateProfileForm(instance=user.profile)
+
+    # Fetch user's exchanges and purchases
+    exchanges = ExchangeRequest.objects.filter(user=user)
+
+    # Check if SoldBook model exists
+    try:
+        purchases = SellBook.objects.filter(user=user)
+    except:
+        purchases = None
+
+    context = {
+        'user_form': user_form,
+        'profile_form': profile_form,
+        'exchanges': exchanges,
+        'purchases': purchases,
+    }
+
+    return render(request, 'users/profile.html', context)
