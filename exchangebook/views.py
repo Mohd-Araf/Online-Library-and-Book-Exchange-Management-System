@@ -9,36 +9,39 @@ def search_books(request):
 @login_required(login_url="/accounts/login/")
 def exchange_book(request):
     if request.method == "POST":
-        form = ExchangeRequestForm(request.POST)
+        form = ExchangeRequestForm(request.POST, request.FILES)
         if form.is_valid():
             exchange = form.save(commit=False)
 
-            # Offered book base price
+
             base_price = exchange.offered_book.base_price
+            offered_price = base_price * 0.6
+            offered_edition = exchange.offered_book.edition or 1
+            requested_edition = exchange.requested_book.edition or 1
+            edition_diff = abs(requested_edition - offered_edition )
+            offered_price -= (base_price * 0.05 * edition_diff)
 
-            #50% cut
-            offered_price = base_price * 0.5
+            total_pages = exchange.offered_book.total_pages or 100
+            missing_percent = (exchange.pages_missing / total_pages) * 100
+            offered_price -= (base_price * 0.005 * missing_percent)
 
-            # Pages missing → 2% cut each
-            offered_price -= (exchange.pages_missing * (base_price * 0.02))
-
-            # Edition difference → 3% cut each
-            offered_price -= (exchange.edition_difference * (base_price * 0.03))
-
-            # Condition cut
             if exchange.condition == "excellent":
-                offered_price -= base_price * 0.03
+                offered_price -= base_price * 0.01
             elif exchange.condition == "fine":
-                offered_price -= base_price * 0.06
+                offered_price -= base_price * 0.03
             elif exchange.condition == "not_good":
-                offered_price -= base_price * 0.10
+                offered_price -= base_price * 0.05
 
+            # Prevent negative price
             if offered_price < 0:
                 offered_price = 0
 
+            # Final payment calculation
             requested_price = exchange.requested_book.base_price
             final_payment = requested_price - offered_price
 
+            # Save
+            exchange.edition_difference = edition_diff
             exchange.calculated_price = int(offered_price)
             exchange.final_payment = int(final_payment)
             exchange.save()
