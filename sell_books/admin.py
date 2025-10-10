@@ -1,4 +1,3 @@
-
 from django.contrib import admin
 from .models import BookType, SellBook
 
@@ -9,7 +8,15 @@ class BookTypeAdmin(admin.ModelAdmin):
 
 @admin.register(SellBook)
 class SellBookAdmin(admin.ModelAdmin):
-    list_display = ('name', 'author', 'booktype', 'price')
+    list_display = ('name', 'author', 'booktype', 'price', 'user')
     search_fields = ('name', 'author')
     list_filter = ('booktype',)
     readonly_fields = ()
+
+    # Hide user field in admin form and auto-set
+    exclude = ('user',)
+
+    def save_model(self, request, obj, form, change):
+        if not obj.user:
+            obj.user = request.user  # Set logged-in user automatically
+        obj.save()

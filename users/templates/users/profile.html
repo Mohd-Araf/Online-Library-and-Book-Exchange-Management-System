@@ -1,125 +1,180 @@
 {% extends "users/base.html" %}
 {% load static %}
 {% block title %}Profile Page{% endblock title %}
+
 {% block content %}
 <style>
-/* ===== Profile Card ===== */
+/* ===== Dark Mode Base ===== */
 body {
     font-family: 'Poppins', sans-serif;
-    background: #f0f2f5;
+    background: linear-gradient(145deg, #0f0f12, #1a1a1f);
+    color: #e4e6eb;
+    margin: 0;
+    padding: 0;
 }
 
+/* ===== Container ===== */
+.container-section {
+    max-width: 950px;
+    margin: 2.5rem auto;
+    padding: 0 15px;
+}
+
+/* ===== Section Title ===== */
+h3.section-title {
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #e4e6eb;
+    border-left: 4px solid #7f5af0;
+    padding-left: 10px;
+    letter-spacing: 0.5px;
+}
+
+/* ===== Profile Card ===== */
 .profile-card {
-    max-width: 800px;
-    margin: 2rem auto;
-    background: white;
-    border-radius: 25px;
-    padding: 2rem;
-    box-shadow: 0 15px 35px rgba(0,0,0,0.1);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    max-width: 850px;
+    margin: 2.5rem auto;
+    background: rgba(25, 25, 30, 0.7);
+    backdrop-filter: blur(10px);
+    border-radius: 20px;
+    padding: 2.5rem;
+    box-shadow: 0 0 30px rgba(127, 90, 240, 0.1);
+    transition: all 0.3s ease;
 }
 .profile-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 25px 45px rgba(0,0,0,0.15);
+    box-shadow: 0 0 40px rgba(127, 90, 240, 0.2);
 }
+
+/* ===== Profile Image ===== */
 .account-img {
-    width: 150px;
-    height: 150px;
+    width: 160px;
+    height: 160px;
     object-fit: cover;
     border-radius: 50%;
-    border: 4px solid #667eea;
+    border: 3px solid #7f5af0;
     margin-bottom: 1rem;
-    transition: transform 0.3s ease;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 .account-img:hover {
-    transform: scale(1.05);
+    transform: scale(1.06);
+    box-shadow: 0 0 20px rgba(127, 90, 240, 0.4);
     cursor: pointer;
 }
+
+/* ===== Form Fields ===== */
 .form-group label {
     font-weight: 500;
     margin-top: 0.8rem;
+    color: #c8c8d0;
 }
 .form-control, .custom-file-input {
     border-radius: 50px;
     padding: 12px 20px;
-    border: 1px solid #ccc;
+    border: 1px solid #333;
+    background: #1f1f25;
+    color: #e4e6eb;
     transition: all 0.3s ease;
     width: 100%;
 }
 .form-control:focus {
-    border-color: #667eea;
-    box-shadow: 0 0 10px rgba(102,126,234,0.4);
+    border-color: #7f5af0;
+    box-shadow: 0 0 10px rgba(127, 90, 240, 0.4);
     outline: none;
 }
+
+/* ===== Buttons ===== */
 .btn-dark {
     border-radius: 50px;
-    padding: 10px 25px;
-    background: linear-gradient(135deg, #667eea, #764ba2);
+    padding: 10px 28px;
+    background: linear-gradient(135deg, #7f5af0, #6246ea);
     border: none;
     color: white;
     font-weight: 500;
+    letter-spacing: 0.5px;
     transition: all 0.3s ease;
 }
 .btn-dark:hover {
-    background: linear-gradient(135deg, #5a67d8, #5f4bb7);
+    background: linear-gradient(135deg, #8a63ff, #7158e2);
     transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(127, 90, 240, 0.4);
 }
+
+/* ===== Links ===== */
 .links a {
     display: inline-block;
     margin-top: 1rem;
-    color: #667eea;
+    color: #7f5af0;
     text-decoration: none;
     font-weight: 500;
     transition: all 0.3s ease;
 }
 .links a:hover {
-    color: #764ba2;
+    color: #b49bff;
+    text-shadow: 0 0 10px rgba(127, 90, 240, 0.3);
 }
 
-/* ===== Exchange & Purchase Cards ===== */
+/* ===== Card (Exchange / Purchase) ===== */
 .exchange-card, .purchase-card {
-    background: #fff;
+    background: rgba(28, 28, 35, 0.8);
     border-radius: 15px;
     padding: 1.5rem;
-    margin-top: 2rem;
-    box-shadow: 0 10px 25px rgba(0,0,0,0.08);
+    margin-top: 1.5rem;
+    box-shadow: 0 0 25px rgba(0,0,0,0.3);
     transition: transform 0.3s ease, box-shadow 0.3s ease;
     display: flex;
     align-items: center;
-    gap: 15px;
+    gap: 18px;
 }
 .exchange-card:hover, .purchase-card:hover {
     transform: translateY(-5px);
-    box-shadow: 0 20px 35px rgba(0,0,0,0.12);
+    box-shadow: 0 0 40px rgba(127, 90, 240, 0.2);
 }
+
+/* ===== Book Image ===== */
 .exchange-card img, .purchase-card img {
-    width: 100px;
-    height: 100px;
+    width: 90px;
+    height: 90px;
     object-fit: cover;
     border-radius: 10px;
+    border: 2px solid #7f5af0;
 }
+
+/* ===== Card Details ===== */
 .card-details {
     flex: 1;
 }
 .card-details strong {
     font-size: 1.1rem;
-    color: #333;
+    color: #fff;
 }
 .card-details p {
-    margin: 0.2rem 0;
+    margin: 0.25rem 0;
     font-size: 0.95rem;
-    color: #555;
+    color: #c8c8d0;
 }
-.container-section {
-    max-width: 900px;
-    margin: 2rem auto;
+
+/* ===== Alert Styling ===== */
+.alert-danger {
+    background: rgba(255, 77, 77, 0.1);
+    border: 1px solid rgba(255, 77, 77, 0.3);
+    color: #ff6b6b;
+    border-radius: 10px;
 }
-h3.section-title {
-    font-weight: 600;
-    margin-bottom: 1rem;
-    color: #333;
-    border-left: 4px solid #667eea;
-    padding-left: 10px;
+
+/* ===== Responsive Design ===== */
+@media (max-width: 768px) {
+    .profile-card {
+        padding: 1.5rem;
+    }
+    .exchange-card, .purchase-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    .exchange-card img, .purchase-card img {
+        width: 120px;
+        height: 120px;
+    }
 }
 </style>
 
@@ -191,6 +246,29 @@ h3.section-title {
         {% endfor %}
     {% else %}
         <p>You haven't exchanged any books yet.</p>
+    {% endif %}
+</div>
+
+<!-- ===== User's Purchased Books ===== -->
+<div class="container-section">
+    <h3 class="section-title">Your Purchased Books</h3>
+    {% if user.purchased_books.all %}
+        {% for purchase in user.purchased_books.all %}
+            <div class="purchase-card">
+                {% if purchase.book.image %}
+                    <img src="{{ purchase.book.image.url }}" alt="{{ purchase.book.name }}">
+                {% else %}
+                    <img src="{% static 'default_book.png' %}" alt="No Image">
+                {% endif %}
+                <div class="card-details">
+                    <strong>{{ purchase.book.name }}</strong>
+                    <p>Author: {{ purchase.book.author }}</p>
+                    <p>Price: {{ purchase.book.price }} ৳</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>You haven't purchased any books yet.</p>
     {% endif %}
 </div>
 
