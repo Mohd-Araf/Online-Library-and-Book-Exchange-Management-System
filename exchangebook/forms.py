@@ -7,9 +7,10 @@ class ExchangeRequestForm(forms.ModelForm):
         fields = [
             'offered_book',
             'requested_book',
+            'user_edition',
             'pages_missing',
             'condition',
-            'font_side_picture',
+            'front_side_picture',
             'back_side_picture',
             'full_book_picture',
             'author_page_picture',
@@ -25,20 +26,24 @@ class ExchangeRequestForm(forms.ModelForm):
         widget=forms.Select(attrs={'class': 'form-control select-search'}),
         label="Select Requested Book"
     )
+    user_edition = forms.IntegerField(
+        min_value=1,
+        label="Your Book Edition",
+        widget=forms.NumberInput(attrs={'class': 'form-control'})
+    )
     pages_missing = forms.IntegerField(
         min_value=0,
         initial=0,
         label="Pages Missing",
         widget=forms.NumberInput(attrs={'class': 'form-control'})
     )
-
     condition = forms.ChoiceField(
-        choices=ExchangeRequest.CONDITION_CHOICES,
+        choices=ExchangeRequest.condition_choices,
         widget=forms.Select(attrs={'class': 'form-control'}),
         label="Condition"
     )
 
-    font_side_picture = forms.ImageField(
+    front_side_picture = forms.ImageField(
         required=True,
         label="Front Side Picture",
         widget=forms.ClearableFileInput(attrs={'class': 'form-control'})
@@ -60,13 +65,10 @@ class ExchangeRequestForm(forms.ModelForm):
     )
 
     def save(self, commit=True, user=None):
-        """
-        Override save method to assign the user and auto-calculate edition_difference
-        """
+
         exchange = super().save(commit=False)
         if user:
             exchange.user = user
-        # edition_difference is auto-calculated in model's save()
         if commit:
             exchange.save()
         return exchange

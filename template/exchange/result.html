@@ -1,11 +1,53 @@
 {% extends "users/base.html" %}
+{% block title %}Exchange Result{% endblock title %}
 {% block content %}
-<div class="container mt-4">
-    <h2>Exchange Result</h2>
-    <p><b>Offered Book:</b> {{ exchange.offered_book.title }} (Base: {{ exchange.offered_book.base_price }})</p>
-    <p><b>Requested Book:</b> {{ exchange.requested_book.title }} (Base: {{ exchange.requested_book.base_price }})</p>
-    <p><b>Calculated Offered Price:</b> {{ exchange.calculated_price }}</p>
-    <p><b>Final Payment Required:</b> {{ exchange.final_payment }}</p>
-    <a href="{% url 'exchangebook:exchange' %}" class="btn btn-primary">Make Another Exchange</a>
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h2 class="text-center text-success mb-4">Exchange Successful!</h2>
+
+        <!-- Offered Book -->
+        <div class="mb-3">
+            <strong>Offered Book:</strong> {{ exchange.offered_book.title }}
+            (Base Price: {{ exchange.offered_book.base_price }} Tk)
+        </div>
+
+        <!-- Requested Book -->
+        <div class="mb-3">
+            <strong>Requested Book:</strong> {{ exchange.requested_book.title }}
+            (Base Price: {{ exchange.requested_book.price }} Tk)
+        </div>
+
+        <!-- Calculated Offered Price -->
+        <div class="mb-3">
+            <strong>Calculated Offered Price:</strong> {{ exchange.calculated_price }} Tk
+        </div>
+
+        <!-- Final Payment Required -->
+        <div class="mb-3">
+            <strong>Final Payment Required:</strong>
+            {% if exchange.final_payment < 0 %}
+                {{ exchange.final_payment_for_display }} Tk
+            {% else %}
+                {{ exchange.final_payment }} Tk
+            {% endif %}
+        </div>
+
+        <!-- Payment Message -->
+        <div class="alert alert-info text-center mt-4">
+            {% if exchange.final_payment < 0 %}
+                You will receive <strong>{{ exchange.final_payment_for_display }} Tk</strong>
+                when your offered book <strong>{{ exchange.offered_book.title }}</strong> is delivered.
+            {% else %}
+                You will receive <strong>0 Tk</strong>
+                when your offered book <strong>{{ exchange.offered_book.title }}</strong> is delivered.
+            {% endif %}
+        </div>
+
+        <!-- Navigation Buttons -->
+        <div class="text-center mt-4">
+            <a href="{% url 'exchangebook:exchange' %}" class="btn btn-primary me-2">Make Another Exchange</a>
+            <a href="{% url 'users-profile' %}" class="btn btn-secondary">Go to Profile</a>
+        </div>
+    </div>
 </div>
-{% endblock %}
+{% endblock content %}

@@ -1,7 +1,6 @@
 from django.contrib import admin
 from .models import OfferedBook, RequestedBook, ExchangeRequest
 
-
 @admin.register(OfferedBook)
 class OfferedBookAdmin(admin.ModelAdmin):
     list_display = ("title", "user", "base_price", "edition", "total_pages")
@@ -12,11 +11,10 @@ class OfferedBookAdmin(admin.ModelAdmin):
 
 @admin.register(RequestedBook)
 class RequestedBookAdmin(admin.ModelAdmin):
-    list_display = ("title", "user", "base_price", "edition")
-    list_editable = ("base_price", "edition")
-    list_filter = ("user", "edition")
-    search_fields = ("title", "user__username")
-
+    list_display = ("title", "price", "exchangeable_amount")
+    list_editable = ("price", "exchangeable_amount")
+    search_fields = ("title",)
+    list_filter = ("price",)
 
 @admin.register(ExchangeRequest)
 class ExchangeRequestAdmin(admin.ModelAdmin):
@@ -24,6 +22,7 @@ class ExchangeRequestAdmin(admin.ModelAdmin):
         "user",
         "offered_book",
         "requested_book",
+        "user_edition",
         "pages_missing",
         "edition_difference",
         "condition",
@@ -36,13 +35,3 @@ class ExchangeRequestAdmin(admin.ModelAdmin):
         "requested_book__title",
         "user__username",
     )
-    readonly_fields = ("edition_difference",)  # auto-calculated
-
-    # Auto assign user and calculate edition_difference
-    def save_model(self, request, obj, form, change):
-        if not obj.user_id:
-            obj.user = request.user  # current admin auto-assigned
-        # auto calculate edition_difference
-        if obj.offered_book and obj.requested_book:
-            obj.edition_difference = abs(obj.offered_book.edition - obj.requested_book.edition)
-        super().save_model(request, obj, form, change)
