@@ -11,6 +11,7 @@ class OfferedBook(models.Model):
     def __str__(self):
         return f"{self.title} (Base: {self.base_price})"
 
+
 class RequestedBook(models.Model):
     title = models.CharField(max_length=200)
     price = models.PositiveIntegerField()
@@ -21,6 +22,7 @@ class RequestedBook(models.Model):
 
     def __str__(self):
         return f"{self.title} (Price: {self.price})"
+
 
 class ExchangeRequest(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="exchange_requests")
@@ -40,8 +42,6 @@ class ExchangeRequest(models.Model):
     back_side_picture = models.ImageField(upload_to="exchange_books/", default="exchange_books/default.jpg")
     full_book_picture = models.ImageField(upload_to="exchange_books/", default="exchange_books/default.jpg")
     author_page_picture = models.ImageField(upload_to="exchange_books/", default="exchange_books/default.jpg")
-
-    # Calculated fields
     edition_difference = models.IntegerField(null=True, blank=True)
     calculated_price = models.IntegerField(null=True, blank=True)
     final_payment = models.IntegerField(null=True, blank=True)
@@ -49,11 +49,8 @@ class ExchangeRequest(models.Model):
     def save(self, *args, **kwargs):
         # Edition difference
         self.edition_difference = self.offered_book.edition - self.user_edition
-
-        # Adjustment based on edition difference
         adjustment = self.edition_difference * 100  # Example: each edition difference = 100 unit adjustment
 
-        # Condition multiplier
         condition_multiplier = {
             'excellent': 1.0,
             'fine': 0.9,
@@ -63,17 +60,19 @@ class ExchangeRequest(models.Model):
         # Calculated price
         self.calculated_price = int(self.offered_book.base_price * condition_multiplier[self.condition] - adjustment)
 
-        # Final payment (can be negative)
+        # যদি calculated_price negative হয় তাহলে 0 ধরা হবে
+        if self.calculated_price < 0:
+            self.calculated_price = 0
+
+        # Final payment (based on adjusted calculated_price)
         self.final_payment = self.requested_book.final_amount() - self.calculated_price
 
         super().save(*args, **kwargs)
 
     @property
     def final_payment_for_display(self):
-        """Always positive value for display in template"""
-        if self.final_payment < 0:
-            return abs(self.final_payment)
-        return 0
+        """Return positive value of final_payment for display in template"""
+        return abs(self.final_payment) if self.final_payment is not None else 0
 
     def __str__(self):
         return f"Exchange {self.offered_book.title} → {self.requested_book.title}"
