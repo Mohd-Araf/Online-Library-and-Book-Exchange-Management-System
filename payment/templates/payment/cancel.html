@@ -1,0 +1,12 @@
+{% extends "users/base.html" %}
+{% block title %}Payment Canceled{% endblock title %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg p-5 text-center">
+        <h2 class="text-warning mb-3">⚠️ Payment Canceled</h2>
+        <p>You canceled the transaction. No payment has been made.</p>
+        <p>If this was a mistake, you can try again anytime.</p>
+        <a href="/" class="btn btn-primary mt-3">Go Back Home</a>
+    </div>
+</div>
+{% endblock %}

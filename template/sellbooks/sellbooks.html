@@ -1,85 +1,38 @@
 {% extends "users/base.html" %}
+{% load static %}
 {% block title %}Buy Book{% endblock title %}
 
 {% block content %}
-<style>
-  .buy-container {
-    max-width: 600px;
-    margin: 40px auto; /* reduced top margin */
-    padding: 40px 50px;
-    background-color: #fff;
-    border-radius: 20px;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.15);
-    transition: transform 0.3s ease;
-  }
+<div class="container mt-5">
+    <div class="card shadow p-4">
+        <h2 class="text-center mb-4 text-primary">Book Purchase Confirmation</h2>
 
-  .buy-container:hover {
-    transform: scale(1.02);
-  }
+        <div class="row">
+            <div class="col-md-4 text-center">
+                <img src="{{ book.image.url }}" alt="{{ book.title }}" class="img-fluid rounded shadow-sm" style="max-height: 300px;">
+            </div>
+            <div class="col-md-8">
+                <h4>{{ book.title }}</h4>
+                <p><strong>Author:</strong> {{ book.author }}</p>
+                <p><strong>Edition:</strong> {{ book.edition }}</p>
+                <p><strong>Total Pages:</strong> {{ book.total_pages }}</p>
+                <p><strong>Price:</strong> <span class="text-success">{{ book.price }} Tk</span></p>
 
-  .buy-container h2 {
-    font-size: 32px;
-    text-align: center;
-    color: #6a1b9a;
-    margin-bottom: 25px;
-  }
+                <form method="POST" action="{% url 'payment:initiate' 'sell' book.id %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="amount" value="{{ book.price }}">
+                    <input type="hidden" name="purpose" value="sellbook">
 
-  .book-details {
-    text-align: center;
-    margin-bottom: 30px;
-  }
+                    <button type="submit" class="btn btn-success btn-lg mt-3">
+                        <i class=""></i>Proceed to Payment
+                    </button>
+                </form>
+            </div>
+        </div>
 
-  .book-details p {
-    font-size: 18px;
-    margin: 8px 0;
-    color: #333;
-  }
-
-  .book-details span {
-    color: #00796b;
-    font-weight: bold;
-  }
-
-  form {
-    display: flex;
-    flex-direction: column;
-    align-items: center;
-  }
-
-  button {
-    padding: 14px 30px;
-    background: linear-gradient(to right, #7b1fa2, #4caf50);
-    color: #fff;
-    font-size: 18px;
-    border: none;
-    border-radius: 10px;
-    cursor: pointer;
-    transition: background 0.3s ease, transform 0.2s ease;
-  }
-
-  button:hover {
-    background: linear-gradient(to right, #6a1b9a, #388e3c);
-    transform: translateY(-2px);
-  }
-
-  @media (max-width: 600px) {
-    .buy-container {
-      padding: 30px 20px;
-      margin: 20px auto;
-    }
-  }
-</style>
-
-<div class="buy-container">
-  <h2>Buy Book</h2>
-  <div class="book-details">
-    <p><strong>Book:</strong> <span>{{ book.name }}</span></p>
-    <p><strong>Author:</strong> <span>{{ book.author }}</span></p>
-    <p><strong>Price:</strong> <span>{{ book.price }} ৳</span></p>
-  </div>
-  <form method="post">
-    {% csrf_token %}
-    <button type="submit">Confirm Purchase</button>
-  </form>
+        <div class="text-center mt-4">
+            <a href="{% url 'sell-book-list' %}" class="btn btn-secondary">Back to Book List</a>
+        </div>
+    </div>
 </div>
 {% endblock %}

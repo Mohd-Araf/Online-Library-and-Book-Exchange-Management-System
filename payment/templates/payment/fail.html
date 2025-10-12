@@ -1,0 +1,12 @@
+{% extends "users/base.html" %}
+{% block title %}Payment Failed{% endblock title %}
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg p-5 text-center">
+        <h2 class="text-danger mb-3">Payment Failed!</h2>
+        <p>Unfortunately, your payment could not be completed.</p>
+        <p>Please try again later or contact support if the issue continues.</p>
+        <a href="/" class="btn btn-secondary mt-3">Back to Home</a>
+    </div>
+</div>
+{% endblock %}

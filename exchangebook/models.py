@@ -1,12 +1,12 @@
 from django.db import models
-from django.contrib.auth.models import User  # Import User model
+from django.contrib.auth.models import User
 
 class OfferedBook(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE, related_name="offered_books")  # Owner
     title = models.CharField(max_length=200)
     base_price = models.PositiveIntegerField()
     edition = models.PositiveIntegerField(default=1)
-    total_pages = models.PositiveIntegerField(default=100)  # Admin set-able
+    total_pages = models.PositiveIntegerField(default=100)
 
     def __str__(self):
         return f"{self.title} (Base: {self.base_price})"
@@ -47,9 +47,9 @@ class ExchangeRequest(models.Model):
     final_payment = models.IntegerField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
-        # Edition difference
+
         self.edition_difference = self.offered_book.edition - self.user_edition
-        adjustment = self.edition_difference * 100  # Example: each edition difference = 100 unit adjustment
+        adjustment = self.edition_difference * 100
 
         condition_multiplier = {
             'excellent': 1.0,
@@ -60,11 +60,11 @@ class ExchangeRequest(models.Model):
         # Calculated price
         self.calculated_price = int(self.offered_book.base_price * condition_multiplier[self.condition] - adjustment)
 
-        # যদি calculated_price negative হয় তাহলে 0 ধরা হবে
+
         if self.calculated_price < 0:
             self.calculated_price = 0
 
-        # Final payment (based on adjusted calculated_price)
+
         self.final_payment = self.requested_book.final_amount() - self.calculated_price
 
         super().save(*args, **kwargs)

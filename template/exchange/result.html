@@ -1,43 +1,60 @@
 {% extends "users/base.html" %}
 {% block title %}Exchange Result{% endblock title %}
+
 {% block content %}
 <div class="container mt-5">
     <div class="card shadow p-4">
-        <h2 class="text-center text-success mb-4">Exchange Successful!</h2>
+        <h2 class="text-center text-info mb-4">Exchange Summary</h2>
 
+        <!-- Offered Book -->
         <div class="mb-3">
             <strong>Offered Book:</strong> {{ exchange.offered_book.title }}
             (Base Price: {{ exchange.offered_book.base_price }} Tk)
         </div>
 
+        <!-- Requested Book -->
         <div class="mb-3">
             <strong>Requested Book:</strong> {{ exchange.requested_book.title }}
             (Base Price: {{ exchange.requested_book.price }} Tk)
         </div>
+
+        <!-- Calculated Prices -->
         <div class="mb-3">
             <strong>Calculated Offered Price:</strong> {{ exchange.calculated_price }} Tk
         </div>
         <div class="mb-3">
             <strong>Final Payment Required:</strong>
-            {% if exchange.final_payment < 0 %}
-                0 Tk
-            {% else %}
-                {{ exchange.final_payment }} Tk
-            {% endif %}
+            <span class="text-success">{{ exchange.final_payment }} Tk</span>
         </div>
-        <div class="alert alert-info text-center mt-4">
-            {% if exchange.final_payment < 0 %}
-                You will receive <strong>{{ exchange.final_payment_for_display }} Tk</strong>
-                when your offered book <strong>{{ exchange.offered_book.title }}</strong> is delivered.
-            {% else %}
-                You will receive <strong>0 Tk</strong>
-                when your offered book <strong>{{ exchange.offered_book.title }}</strong> is delivered.
-            {% endif %}
-        </div>
+
+        <!-- Payment or Confirm Exchange -->
+        {% if exchange.final_payment > 0 %}
+            <form method="POST" action="{% url 'payment:initiate' 'exchange' exchange.id %}">
+                {% csrf_token %}
+                <input type="hidden" name="amount" value="{{ exchange.final_payment }}">
+                <input type="hidden" name="purpose" value="exchangebook">
+
+                <div class="text-center">
+                    <button type="submit" class="btn btn-success btn-lg px-5">
+                        <i class="fas fa-credit-card"></i>Proceed to Payment
+                    </button>
+                </div>
+            </form>
+        {% else %}
+            <div class="text-center">
+                <form method="POST" action="{% url 'exchangebook:exchange' %}">
+                    {% csrf_token %}
+                    <input type="hidden" name="exchange_id" value="{{ exchange.id }}">
+                    <button type="submit" class="btn btn-primary btn-lg px-5">
+                        Confirm Exchange
+                    </button>
+                </form>
+            </div>
+        {% endif %}
+
         <div class="text-center mt-4">
-            <a href="{% url 'exchangebook:exchange' %}" class="btn btn-primary me-2">Make Another Exchange</a>
-            <a href="{% url 'users-profile' %}" class="btn btn-secondary">Go to Profile</a>
+            <a href="{% url 'exchangebook:search' %}" class="btn btn-secondary">Back to Search</a>
         </div>
     </div>
 </div>
-{% endblock content %}
+{% endblock %}

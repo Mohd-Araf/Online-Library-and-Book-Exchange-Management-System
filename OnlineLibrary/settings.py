@@ -30,6 +30,7 @@ INSTALLED_APPS = [
     'users',
     'sell_books',
     'exchangebook',
+    'payment',
 ]
 
 MIDDLEWARE = [
@@ -50,6 +51,8 @@ TEMPLATES = [
         'BACKEND': 'django.template.backends.django.DjangoTemplates',
         'DIRS': ["template"],
         'APP_DIRS': True,
+
+
         'OPTIONS': {
             'context_processors': [
                 'django.template.context_processors.debug',
@@ -142,4 +145,39 @@ EMAIL_PORT = 587
 EMAIL_HOST_USER = '22201138@uap-bd.edu'
 EMAIL_HOST_PASSWORD = 'bdas zsrb fxjv jjtq'
 DEFAULT_FROM_EMAIL = EMAIL_HOST_USER
+
+# Toggle: True = Sandbox (Test), False = Live
+SSL_COMMERZ_SANDBOX = True
+
+# Store credentials
+SSL_COMMERZ_STORE_ID = "uap68e9354a02fd8"
+SSL_COMMERZ_STORE_PASSWORD = "uap68e9354a02fd8@ssl"
+
+# Base API URL depending on sandbox or live
+SSL_COMMERZ_API_BASE_URL = (
+    "https://sandbox.sslcommerz.com/gwprocess/v3/api.php"
+    if SSL_COMMERZ_SANDBOX
+    else "https://securepay.sslcommerz.com/gwprocess/v3/api.php"
+)
+
+# Validation API URL depending on sandbox or live
+SSL_COMMERZ_VALIDATION_URL = (
+    "https://sandbox.sslcommerz.com/validator/api/validationserverAPI.php"
+    if SSL_COMMERZ_SANDBOX
+    else "https://securepay.sslcommerz.com/validator/api/validationserverAPI.php"
+)
+
+# Optional: currency
+SSL_COMMERZ_CURRENCY = "BDT"
+
+# Merchant Panel (for reference / testing)
+SSL_COMMERZ_MERCHANT_PANEL = "https://sandbox.sslcommerz.com/manage/" if SSL_COMMERZ_SANDBOX else "https://securepay.sslcommerz.com/manage/"
+# settings.py
+CSRF_TRUSTED_ORIGINS = [
+    "http://127.0.0.1:8000",
+    "http://localhost:8000",
+    "https://www.onlinelibrary.com",
+    "https://sandbox.sslcommerz.com"
+]
+
 
