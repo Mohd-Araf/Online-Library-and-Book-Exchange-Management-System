@@ -1,0 +1,302 @@
+{% extends "users/base.html" %}
+{% load static %}
+{% block title %}Profile Page{% endblock title %}
+
+{% block content %}
+<style>
+/* ===== Light Glass Theme ===== */
+body {
+    font-family: 'Poppins', sans-serif;
+    background: linear-gradient(135deg, #fdfbfb, #ebedee);
+    color: #333;
+    margin: 0;
+    padding: 0;
+}
+
+/* ===== Container ===== */
+.container-section {
+    max-width: 950px;
+    margin: 2rem auto;
+    padding: 0 15px;
+}
+
+/* ===== Section Title ===== */
+h3.section-title {
+    font-weight: 600;
+    margin-bottom: 1rem;
+    color: #333;
+    border-left: 4px solid #ff6f61;
+    padding-left: 10px;
+    letter-spacing: 0.5px;
+}
+
+/* ===== Profile Card ===== */
+.profile-card {
+    max-width: 850px;
+    margin: 2rem auto;
+    background: rgba(255, 255, 255, 0.8);
+    backdrop-filter: blur(12px);
+    border-radius: 20px;
+    padding: 2rem;
+    box-shadow: 0 8px 20px rgba(0,0,0,0.1);
+    transition: all 0.3s ease;
+}
+.profile-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 12px 25px rgba(0,0,0,0.15);
+}
+
+/* ===== Profile Image ===== */
+.account-img {
+    width: 160px;
+    height: 160px;
+    object-fit: cover;
+    border-radius: 50%;
+    border: 3px solid #ff6f61;
+    margin-bottom: 1rem;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.account-img:hover {
+    transform: scale(1.06);
+    box-shadow: 0 0 20px rgba(255,111,97,0.4);
+    cursor: pointer;
+}
+
+/* ===== Form Fields ===== */
+.form-group label {
+    font-weight: 500;
+    margin-top: 0.8rem;
+    color: #555;
+}
+.form-control, .custom-file-input {
+    border-radius: 50px;
+    padding: 12px 20px;
+    border: 1px solid #ccc;
+    background: #f8f8f8;
+    color: #333;
+    transition: all 0.3s ease;
+    width: 100%;
+}
+.form-control:focus {
+    border-color: #ff6f61;
+    box-shadow: 0 0 10px rgba(255,111,97,0.3);
+    outline: none;
+}
+
+/* ===== Buttons ===== */
+.btn-light {
+    border-radius: 50px;
+    padding: 10px 28px;
+    background: linear-gradient(135deg, #ff6f61, #ff9472);
+    border: none;
+    color: white;
+    font-weight: 500;
+    letter-spacing: 0.5px;
+    transition: all 0.3s ease;
+    margin-right: 10px;
+}
+.btn-light:hover {
+    background: linear-gradient(135deg, #ff8573, #ffb0a0);
+    transform: scale(1.05);
+    box-shadow: 0 0 15px rgba(255,111,97,0.4);
+}
+
+/* ===== Toggle Buttons ===== */
+.toggle-buttons {
+    text-align: center;
+    margin-bottom: 1.5rem;
+}
+.toggle-buttons button {
+    border-radius: 50px;
+    padding: 10px 25px;
+    margin: 0 5px;
+    border: 1px solid #ff6f61;
+    background: transparent;
+    color: #333;
+    font-weight: 500;
+    transition: all 0.3s ease;
+}
+.toggle-buttons button.active, .toggle-buttons button:hover {
+    background: linear-gradient(135deg, #ff6f61, #ff9472);
+    color: #fff;
+}
+
+/* ===== Cards ===== */
+.exchange-card, .purchase-card {
+    background: rgba(255,255,255,0.8);
+    border-radius: 15px;
+    padding: 1.5rem;
+    margin-top: 1rem;
+    box-shadow: 0 5px 20px rgba(0,0,0,0.08);
+    display: flex;
+    align-items: center;
+    gap: 18px;
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+}
+.exchange-card:hover, .purchase-card:hover {
+    transform: translateY(-5px);
+    box-shadow: 0 10px 30px rgba(0,0,0,0.12);
+}
+.exchange-card img, .purchase-card img {
+    width: 90px;
+    height: 90px;
+    object-fit: cover;
+    border-radius: 10px;
+    border: 2px solid #ff6f61;
+}
+.card-details {
+    flex: 1;
+}
+.card-details strong {
+    font-size: 1.1rem;
+    color: #333;
+}
+.card-details p {
+    margin: 0.25rem 0;
+    font-size: 0.95rem;
+    color: #555;
+}
+
+/* ===== Alert Styling ===== */
+.alert-danger {
+    background: rgba(255, 77, 77, 0.1);
+    border: 1px solid rgba(255, 77, 77, 0.3);
+    color: #ff6b6b;
+    border-radius: 10px;
+}
+
+/* ===== Responsive ===== */
+@media (max-width: 768px) {
+    .profile-card { padding: 1.5rem; }
+    .exchange-card, .purchase-card {
+        flex-direction: column;
+        text-align: center;
+    }
+    .exchange-card img, .purchase-card img {
+        width: 120px;
+        height: 120px;
+    }
+}
+</style>
+
+<!-- ===== Profile Card ===== -->
+<div class="profile-card text-center">
+    <img class="account-img" src="{{ user.profile.avatar.url }}" alt="Avatar"/>
+
+    {% if user_form.errors %}
+        <div class="alert alert-danger alert-dismissible fade show" role="alert">
+            {% for key, value in user_form.errors.items %}
+                <strong>{{ value }}</strong>
+            {% endfor %}
+            <button type="button" class="close" data-dismiss="alert" aria-label="Close">
+                <span aria-hidden="true">&times;</span>
+            </button>
+        </div>
+    {% endif %}
+
+    <form method="post" enctype="multipart/form-data" class="text-left mt-4">
+        {% csrf_token %}
+        <div class="form-row">
+            <div class="col-md-12">
+                <div class="form-group">
+                    <label>Username</label>
+                    {{ user_form.username }}
+                </div>
+                <div class="form-group">
+                    <label>Email</label>
+                    {{ user_form.email }}
+                </div>
+                <div class="form-group links">
+                    <a href="{% url 'password_change' %}">Change Password</a>
+                </div>
+                <div class="form-group mt-3">
+                    <label>Change Avatar</label>
+                    {{ profile_form.avatar }}
+                </div>
+                <div class="form-group mt-3">
+                    <label>Bio</label>
+                    {{ profile_form.bio }}
+                </div>
+            </div>
+        </div>
+        <div class="text-center mt-4">
+            <button type="submit" class="btn btn-light mr-2">Save Changes</button>
+            <button type="reset" class="btn btn-light">Reset</button>
+        </div>
+    </form>
+</div>
+
+<!-- ===== Toggle Buttons ===== -->
+<div class="toggle-buttons">
+    <button id="btn-exchanges">Your Book Exchanges</button>
+    <button id="btn-purchases">Your Purchased Books</button>
+</div>
+
+<!-- ===== User's Exchanges ===== -->
+<div class="container-section" id="exchanges-section" style="display: none;">
+    {% if exchanges %}
+        {% for exchange in exchanges %}
+            <div class="exchange-card">
+                <img src="{{ exchange.full_book_picture.url }}" alt="Book Image">
+                <div class="card-details">
+                    <strong>{{ exchange.offered_book.title }}</strong> → <strong>{{ exchange.requested_book.title }}</strong>
+                    <p>Edition Difference: {{ exchange.edition_difference }}</p>
+                    <p>Pages Missing: {{ exchange.pages_missing }}</p>
+                    <p>Condition: {{ exchange.get_condition_display }}</p>
+                    <p>Calculated Price: {{ exchange.calculated_price }}</p>
+                    <p>Final Payment:
+                      {% if exchange.final_payment <= 0 %} 0 {% else %} {{ exchange.final_payment }} {% endif %}
+                    </p>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>You haven't exchanged any books yet.</p>
+    {% endif %}
+</div>
+
+<!-- ===== User's Purchased Books ===== -->
+<div class="container-section" id="purchases-section" style="display: none;">
+    {% if purchases %}
+        {% for purchase in purchases %}
+            <div class="purchase-card">
+                {% if purchase.book.image %}
+                    <img src="{{ purchase.book.image.url }}" alt="{{ purchase.book.name }}">
+                {% else %}
+                    <img src="{% static 'default_book.png' %}" alt="No Image">
+                {% endif %}
+                <div class="card-details">
+                    <strong>{{ purchase.book.name }}</strong>
+                    <p>Author: {{ purchase.book.author }}</p>
+                    <p>Price: {{ purchase.book.price }} ৳</p>
+                </div>
+            </div>
+        {% endfor %}
+    {% else %}
+        <p>You haven't purchased any books yet.</p>
+    {% endif %}
+</div>
+
+<!-- ===== Toggle JS ===== -->
+<script>
+const btnExchanges = document.getElementById('btn-exchanges');
+const btnPurchases = document.getElementById('btn-purchases');
+const exchangesSection = document.getElementById('exchanges-section');
+const purchasesSection = document.getElementById('purchases-section');
+
+btnExchanges.addEventListener('click', () => {
+    exchangesSection.style.display = 'block';
+    purchasesSection.style.display = 'none';
+    btnExchanges.classList.add('active');
+    btnPurchases.classList.remove('active');
+});
+
+btnPurchases.addEventListener('click', () => {
+    exchangesSection.style.display = 'none';
+    purchasesSection.style.display = 'block';
+    btnExchanges.classList.remove('active');
+    btnPurchases.classList.add('active');
+});
+</script>
+
+{% endblock content %}

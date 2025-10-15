@@ -1,0 +1,31 @@
+{% extends "users/base.html" %}
+{% load static %}
+{% block title %}Payment Successful{% endblock title %}
+
+{% block content %}
+<div class="container mt-5">
+    <div class="card shadow-lg p-5 text-center">
+        <h2 class="text-success mb-3">Payment Successful!</h2>
+        <p>Transaction ID: <strong>{{ payment.transaction_id }}</strong></p>
+        <p>Amount Paid: <strong>{{ payment.amount }} Tk</strong></p>
+        <p>Thank you for your payment. Your transaction has been successfully completed.</p>
+
+        {% if payment.sell_book %}
+            <div class="purchase-card mt-4">
+                {% if payment.sell_book.image %}
+                    <img src="{{ payment.sell_book.image.url }}" alt="{{ payment.sell_book.name }}" style="width:120px; height:120px; object-fit:cover; border-radius:10px;">
+                {% else %}
+                    <img src="{% static 'default_book.png' %}" alt="No Image" style="width:120px; height:120px; object-fit:cover; border-radius:10px;">
+                {% endif %}
+                <div class="card-details mt-2">
+                    <strong>{{ payment.sell_book.name }}</strong>
+                    <p>Author: {{ payment.sell_book.author }}</p>
+                    <p>Price: {{ payment.sell_book.price }} Tk</p>
+                </div>
+            </div>
+        {% endif %}
+
+        <a href="/" class="btn btn-primary mt-4">Go to Home</a>
+    </div>
+</div>
+{% endblock %}
