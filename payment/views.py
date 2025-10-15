@@ -8,8 +8,8 @@ from django.views.decorators.csrf import csrf_exempt
 from .models import Payment
 from sell_books.models import SellBook
 from exchangebook.models import ExchangeRequest
+from sell_books.models import PurchasedBook
 
-# Store credentials from settings
 STORE_ID = settings.SSL_COMMERZ_STORE_ID
 STORE_PASSWORD = settings.SSL_COMMERZ_STORE_PASSWORD
 API_URL = settings.SSL_COMMERZ_API_BASE_URL
@@ -17,13 +17,7 @@ API_URL = settings.SSL_COMMERZ_API_BASE_URL
 
 @login_required
 def initiate_payment(request, payment_type, obj_id):
-    """
-    Handles both SellBook and ExchangeBook payments.
-    payment_type: 'sell' or 'exchange'
-    obj_id: book_id or exchange_id
-    """
-    transaction_id = str(uuid.uuid4())
-
+    transaction_id = uuid.uuid4()
     if payment_type == "sell":
         book = get_object_or_404(SellBook, id=obj_id)
         amount = book.price
@@ -33,7 +27,6 @@ def initiate_payment(request, payment_type, obj_id):
             amount=amount,
             sell_book=book
         )
-
     elif payment_type == "exchange":
         exchange = get_object_or_404(ExchangeRequest, id=obj_id)
         amount = exchange.final_payment
@@ -43,11 +36,9 @@ def initiate_payment(request, payment_type, obj_id):
             amount=amount,
             exchange_request=exchange
         )
-
     else:
         return HttpResponse("Invalid Payment Type")
 
-    # Payment URLs
     success_url = request.build_absolute_uri(f"/payment/success/{transaction_id}/")
     fail_url = request.build_absolute_uri(f"/payment/fail/{transaction_id}/")
     cancel_url = request.build_absolute_uri(f"/payment/cancel/{transaction_id}/")
@@ -57,7 +48,7 @@ def initiate_payment(request, payment_type, obj_id):
         "store_passwd": STORE_PASSWORD,
         "total_amount": str(amount),
         "currency": "BDT",
-        "tran_id": transaction_id,
+        "tran_id": str(transaction_id),
         "success_url": success_url,
         "fail_url": fail_url,
         "cancel_url": cancel_url,
@@ -70,14 +61,16 @@ def initiate_payment(request, payment_type, obj_id):
         "product_profile": "general",
     }
 
-    response = requests.post(API_URL, data=post_data)
-    response_data = response.json()
+    try:
+        response = requests.post(API_URL, data=post_data)
+        response_data = response.json()
+    except Exception as e:
+        print("SSLCommerz Error:", e)
+        return HttpResponse("Error connecting to SSLCommerz gateway.")
 
-    if response_data.get('status') == 'SUCCESS':
-        gateway_url = response_data['GatewayPageURL']
-        return redirect(gateway_url)
+    if response_data.get("status") == "SUCCESS":
+        return redirect(response_data["GatewayPageURL"])
     else:
-        # Debug: SSLCommerz response
         print("SSLCommerz response:", response_data)
         return HttpResponse("Payment initialization failed. Please try again.")
 
@@ -88,15 +81,17 @@ def payment_success(request, transaction_id):
     payment.status = "Successful"
     payment.save()
 
+    # PurchasedBook create after successful payment
     if payment.sell_book:
-        return redirect('buy-success', buy_id=payment.sell_book.id)
-    elif payment.exchange_request:
-        return render(request, "payment/success.html", {
-            "exchange": payment.exchange_request,
-            "transaction_id": payment.transaction_id
-        })
+        PurchasedBook.objects.get_or_create(user=payment.user, book=payment.sell_book)
 
-    return HttpResponse("Payment completed successfully.")
+    return redirect("payment:success-page", transaction_id=payment.transaction_id)
+
+
+@login_required
+def payment_success_page(request, transaction_id):
+    payment = get_object_or_404(Payment, transaction_id=transaction_id)
+    return render(request, "payment/success.html", {"payment": payment})
 
 
 @csrf_exempt

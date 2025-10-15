@@ -1,7 +1,7 @@
 from django.db import models
 from django.contrib.auth.models import User
 from sell_books.models import SellBook
-from exchangebook.models import ExchangeRequest  # assuming you have ExchangeRequest model
+from exchangebook.models import ExchangeRequest
 
 class Payment(models.Model):
     user = models.ForeignKey(User, on_delete=models.CASCADE)

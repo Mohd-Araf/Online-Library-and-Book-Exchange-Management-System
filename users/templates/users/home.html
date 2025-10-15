@@ -90,6 +90,30 @@
     .input-group .btn-custom {
         border-radius: 0 30px 30px 0;
     }
+    /* Search Box */
+    .input-group .form-control {
+        border-radius: 30px 0 0 30px;
+        max-width: 400px;
+        border: 2px solid #3b82f6; /* Blue border */
+        background-color: rgba(59, 130, 246, 0.1); /* Light blue background */
+        color: #ffffff; /* Text color */
+    }
+    .input-group .form-control::placeholder {
+        color: #dbeafe; /* Placeholder color */
+    }
+    .input-group .btn-custom {
+        border-radius: 0 30px 30px 0;
+        background-color: #3b82f6; /* Blue button */
+        border: 2px solid #3b82f6;
+        color: #ffffff;
+        font-weight: 600;
+        transition: background-color 0.3s, transform 0.3s;
+    }
+    .input-group .btn-custom:hover {
+        background-color: #2563eb; /* Darker blue on hover */
+        transform: translateY(-2px);
+    }
+
 
     /* Feature Section */
     .features {

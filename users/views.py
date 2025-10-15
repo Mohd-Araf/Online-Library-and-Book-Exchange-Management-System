@@ -7,7 +7,8 @@ from django.views import View
 from django.contrib.auth.decorators import login_required
 
 from exchangebook.models import ExchangeRequest
-from sell_books.models import SellBook
+from sell_books.models import SellBook, PurchasedBook
+from payment.models import Payment
 from .forms import RegisterForm, LoginForm, UpdateUserForm, UpdateProfileForm
 
 def home(request):
@@ -77,14 +78,13 @@ def profile(request):
         user_form = UpdateUserForm(instance=user)
         profile_form = UpdateProfileForm(instance=user.profile)
 
-    # Fetch user's exchanges and purchases
+    # Fetch user's exchanges
     exchanges = ExchangeRequest.objects.filter(user=user)
 
-    # Check if SoldBook model exists
-    try:
-        purchases = SellBook.objects.filter(user=user)
-    except:
-        purchases = None
+    # Fetch user's purchased books (only successful payments)
+    purchased_book_ids = Payment.objects.filter(user=user, status='Successful', sell_book__isnull=False)\
+                                        .values_list('sell_book', flat=True)
+    purchases = PurchasedBook.objects.filter(user=user, book__id__in=purchased_book_ids)
 
     context = {
         'user_form': user_form,
