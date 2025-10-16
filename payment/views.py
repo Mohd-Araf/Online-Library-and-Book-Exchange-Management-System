@@ -81,7 +81,6 @@ def payment_success(request, transaction_id):
     payment.status = "Successful"
     payment.save()
 
-    # PurchasedBook create after successful payment
     if payment.sell_book:
         PurchasedBook.objects.get_or_create(user=payment.user, book=payment.sell_book)
 

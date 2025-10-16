@@ -2,6 +2,80 @@
 {% block title %}Contact Us{% endblock title %}
 
 {% block content %}
+
+
+<div class="contact-section">
+  <div class="contact-container">
+    <!-- Header -->
+    <div class="contact-header">
+      <h2>Get in Touch</h2>
+      <p>We’re here to answer your questions and help you out.</p>
+    </div>
+
+    <!-- Info Cards -->
+    <div class="contact-info">
+      <div class="info-card">
+        <i class="fas fa-map-marker-alt"></i>
+        <h4>Our Office</h4>
+        <p>Dhaka, Bangladesh</p>
+      </div>
+      <div class="info-card">
+        <i class="fas fa-phone-alt"></i>
+        <h4>Call Us</h4>
+        <p>+880 1403181484</p>
+      </div>
+      <div class="info-card">
+        <i class="fas fa-envelope"></i>
+        <h4>Email Us</h4>
+        <p>22201138@uap-bd.edu</p>
+      </div>
+    </div>
+
+    <!-- Contact Form -->
+    <div class="contact-form">
+      <h3>Send Us a Message</h3>
+
+      {% if messages %}
+        <div style="text-align:center; margin-bottom:20px;">
+          {% for message in messages %}
+            <p style="color: {% if message.tags == 'success' %}green{% else %}red{% endif %};">
+              {{ message }}
+            </p>
+          {% endfor %}
+        </div>
+      {% endif %}
+
+      <form method="post" class="form-grid">
+        {% csrf_token %}
+        <div class="form-group">
+          <label for="name">Your Name</label>
+          <input type="text" id="name" name="name" placeholder="Enter your name" required>
+        </div>
+
+        <div class="form-group">
+          <label for="email">Your Email</label>
+          <input type="email" id="email" name="email" placeholder="Enter your email" required>
+        </div>
+
+        <div class="form-group" style="grid-column: span 2;">
+          <label for="subject">Subject</label>
+          <input type="text" id="subject" name="subject" placeholder="Enter subject" required>
+        </div>
+
+        <div class="form-group" style="grid-column: span 2;">
+          <label for="message">Message</label>
+          <textarea id="message" name="message" placeholder="Write your message..." required></textarea>
+        </div>
+
+        <button type="submit" class="contact-btn">Send Message</button>
+      </form>
+    </div>
+
+    <div class="map-section">
+
+    </div>
+  </div>
+</div>
 <style>
   .contact-section {
     font-family: 'Segoe UI', sans-serif;
@@ -168,77 +242,4 @@
     }
   }
 </style>
-
-<div class="contact-section">
-  <div class="contact-container">
-    <!-- Header -->
-    <div class="contact-header">
-      <h2>Get in Touch</h2>
-      <p>We’re here to answer your questions and help you out.</p>
-    </div>
-
-    <!-- Info Cards -->
-    <div class="contact-info">
-      <div class="info-card">
-        <i class="fas fa-map-marker-alt"></i>
-        <h4>Our Office</h4>
-        <p>Dhaka, Bangladesh</p>
-      </div>
-      <div class="info-card">
-        <i class="fas fa-phone-alt"></i>
-        <h4>Call Us</h4>
-        <p>+880 1403181484</p>
-      </div>
-      <div class="info-card">
-        <i class="fas fa-envelope"></i>
-        <h4>Email Us</h4>
-        <p>22201138@uap-bd.edu</p>
-      </div>
-    </div>
-
-    <!-- Contact Form -->
-    <div class="contact-form">
-      <h3>Send Us a Message</h3>
-
-      {% if messages %}
-        <div style="text-align:center; margin-bottom:20px;">
-          {% for message in messages %}
-            <p style="color: {% if message.tags == 'success' %}green{% else %}red{% endif %};">
-              {{ message }}
-            </p>
-          {% endfor %}
-        </div>
-      {% endif %}
-
-      <form method="post" class="form-grid">
-        {% csrf_token %}
-        <div class="form-group">
-          <label for="name">Your Name</label>
-          <input type="text" id="name" name="name" placeholder="Enter your name" required>
-        </div>
-
-        <div class="form-group">
-          <label for="email">Your Email</label>
-          <input type="email" id="email" name="email" placeholder="Enter your email" required>
-        </div>
-
-        <div class="form-group" style="grid-column: span 2;">
-          <label for="subject">Subject</label>
-          <input type="text" id="subject" name="subject" placeholder="Enter subject" required>
-        </div>
-
-        <div class="form-group" style="grid-column: span 2;">
-          <label for="message">Message</label>
-          <textarea id="message" name="message" placeholder="Write your message..." required></textarea>
-        </div>
-
-        <button type="submit" class="contact-btn">Send Message</button>
-      </form>
-    </div>
-
-    <div class="map-section">
-
-    </div>
-  </div>
-</div>
 {% endblock content %}

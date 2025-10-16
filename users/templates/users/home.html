@@ -4,7 +4,7 @@
 {% block content %}
 
 <div class="container mt-5">
-    <!-- Jumbotron -->
+
     <div class="custom-jumbotron">
         <h1 class="display-4">Welcome, {{ user.first_name|default:'Guest'|title }}</h1>
         <p class="lead">
@@ -13,7 +13,7 @@
         </p>
         <hr class="my-4">
 
-        <!-- Search Box -->
+
         <form method="get" action="{% url 'sell-book-list' %}">
             <div class="input-group justify-content-center mt-3 mb-3">
                 <input type="text" name="q" class="form-control" placeholder="Search books by name or author" value="{{ request.GET.q }}">
@@ -24,7 +24,7 @@
         </form>
     </div>
 
-    <!-- Feature Section -->
+
     <div class="row features text-center">
         <div class="col-md-4">
             <div class="feature-card">
@@ -47,18 +47,18 @@
     </div>
 </div>
 
-<!-- 🌟 Chat Toggle Button -->
+
 <button id="chat-toggle">💬 Chat</button>
 
-<!-- 🌟 Chatbot UI -->
+
 <div id="chatbox" style="display: none;">
   <div class="chat-header">
-    <img src="https://admission.uap-bd.edu/ApplicationDocs/Institute/UAP_banner.png" alt="UAP Logo" style="width: 30px; height: 30px; margin-right: 10px;">
-    UAP Library Chatbot
+    <img src="{{ MEDIA_URL }}Image/Logo.jpg" alt="Library Logo" style="width: 30px; height: 30px; margin-right: 10px;">
+    Online Library Chatbot
     <button id="chat-close" class="chat-close-btn">❌</button>
   </div>
   <div class="chat-body" id="chat-body">
-    <div id="chat-response" class="chat-message bot-message">Hi! Ask me anything about the library or university.</div>
+    <div id="chat-response" class="chat-message bot-message">Hi! Ask me anything about the library or book exchange.</div>
   </div>
   <div class="chat-footer">
     <input id="chat-input" type="text" placeholder="Type your question..." />
@@ -67,16 +67,13 @@
 </div>
 
 <style>
-    /* ===========================
-   Home Page Styles
-=========================== */
 body {
     background: linear-gradient(135deg, #0f172a, #1e3a8a);
     color: #f8fafc;
     font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
 }
 
-/* Jumbotron */
+
 .custom-jumbotron {
     background: rgba(255, 255, 255, 0.08);
     border-radius: 18px;
@@ -103,7 +100,7 @@ body {
     animation: fadeInUp 1.8s ease-in-out;
 }
 
-/* Search Bar */
+
 .input-group .form-control {
     border-radius: 30px 0 0 30px;
     max-width: 400px;
@@ -130,7 +127,7 @@ body {
     transform: translateY(-2px);
 }
 
-/* Feature Cards */
+
 .features {
     margin-top: 60px;
 }
@@ -158,9 +155,6 @@ body {
     box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
 }
 
-/* ===========================
-   Chat Styles
-=========================== */
 #chat-toggle {
     position: fixed;
     bottom: 25px;
@@ -254,16 +248,12 @@ body {
 .bot-message {
     background: #f0f4f7;
     align-self: flex-start;
-    margin-right: auto;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 .user-message {
     background: #4caf50;
     color: white;
     align-self: flex-end;
-    margin-left: auto;
-    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
 }
 
 /* Chat Input */
@@ -277,7 +267,6 @@ body {
     outline: none;
     font-size: 14px;
     color: #333;
-    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
 }
 
 #chat-submit {
@@ -297,73 +286,48 @@ body {
     background: #388e3c;
 }
 
-/* Chat Footer */
-.chat-footer {
-    display: flex;
-    flex-direction: column;
-    justify-content: space-between;
-    padding: 10px;
-    background: #ffffff;
-    border-top: 1px solid #ddd;
-    position: sticky;
-    bottom: 0;
-    z-index: 1;
-    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
-}
-
-/* ===========================
-   Animations
-=========================== */
+/* Animations */
 @keyframes slideIn {
     from { opacity: 0; transform: translateY(20px); }
     to { opacity: 1; transform: translateY(0); }
 }
-
-@keyframes fadeIn {
-    from { opacity: 0; }
-    to { opacity: 1; }
-}
-
 @keyframes fadeInUp {
     from { transform: translateY(25px); opacity: 0; }
     to { transform: translateY(0); opacity: 1; }
 }
-
 @keyframes textGlow {
     from { text-shadow: 0 0 10px #3b82f6, 0 0 20px #2563eb; }
     to { text-shadow: 0 0 20px #60a5fa, 0 0 30px #3b82f6; }
 }
-
 </style>
 
 <script>
   const responses = {
-    "hi": "Hello! How can I help you today?",
-    "hello": "Hi there! Need any help regarding the library?",
-    "library timing": "UAP Library is open Sunday to Thursday, 9:00 AM - 9:00 PM. Saturday: 9:00 AM - 5:00 PM.",
-    "rules": "Library rules include: Maintain silence, no food, bring your ID, return books on time.",
-    "location": "The UAP Library is located at 9th floor, A Block, 74/A Green Road, Dhaka.",
-    "contact": "You can contact UAP Library at: library@uap-bd.edu or call +8802-58157091-4 (Ext-952).",
-    "uap website": "Visit UAP's official website: [www.uap-bd.edu](https://www.uap-bd.edu/) for details on programs, departments, and admission.",
-    "uap departments": "UAP offers several programs including Computer Science, Engineering, Architecture, Business, Pharmacy, and more.",
-    "library rules": "Please maintain silence, no food or drinks allowed, carry your student ID, and return books on time.",
-    "uap history": "UAP was established in 1996 and is known for its quality education and commitment to student development.",
-    "library resources": "The UAP Library offers various resources such as books, e-journals, research papers, and a comfortable study environment.",
-    "book borrow": "To borrow books, log into the library system and follow the borrowing process.",
-    "library open": "The library is open Sunday to Thursday, 9:00 AM to 9:00 PM, and on Saturday from 9:00 AM to 5:00 PM."
+    "hi": "Hello! Welcome to the Online Library & Book Exchange System!",
+    "hello": "Hi there! How can I assist you with books or exchanges today?",
+    "contact": " Contact us at: +880 1403-181484 or email: online.library@gmail.com",
+    "location": "Our office is located in Green Road, Dhaka, Bangladesh.",
+    "gmail": "Official email: 22201138@uap-bd.edu",
+    "rules": "Rules: Maintain silence, handle books carefully, early delivery and keep your account credentials safe.",
+    "book exchange": "You can exchange books by going to the 'Exchange Book' section, choosing a book, and sending a request to the owner.",
+    "online library": "This Online Library lets you browse, and exchange books easily from your account.",
+    "timing": "Our online services are available 24/7. Physical pickups and returns are open Sunday–Thursday, 9 AM–5 PM.",
+    "help": "You can ask about: rules, contact, location, borrow, exchange, or online library info."
   };
 
-  let messageCount = 0;
-
   function getResponse(input) {
-    const lowerInput = input.toLowerCase();
-    if (responses[lowerInput]) return responses[lowerInput];
-    if (lowerInput.includes("time") || lowerInput.includes("open")) return responses["library timing"];
-    if (lowerInput.includes("rule") || lowerInput.includes("policy")) return responses["rules"];
-    if (lowerInput.includes("where") || lowerInput.includes("location")) return responses["location"];
-    if (lowerInput.includes("library")) return responses["book borrow"];
-    if (lowerInput.includes("uap")) return responses["uap website"];
-    return "Sorry, I didn't understand that. Please ask something about the library or university.";
+    const text = input.toLowerCase();
+    if (responses[text]) return responses[text];
+    if (text.includes("contact") || text.includes("number")) return responses["contact"];
+    if (text.includes("location") || text.includes("where")) return responses["location"];
+    if (text.includes("rule") || text.includes("policy")) return responses["rules"];
+    if (text.includes("borrow")) return responses["borrow book"];
+    if (text.includes("exchange")) return responses["book exchange"];
+    if (text.includes("library") || text.includes("book")) return responses["online library"];
+    if (text.includes("time") || text.includes("open")) return responses["timing"];
+    if (text.includes("gmail") || text.includes("email")) return responses["gmail"];
+    if (text.includes("help") || text.includes("info")) return responses["help"];
+    return " Sorry, I didn't understand that. You can ask about contact info, rules, book exchange, or library timing.";
   }
 
   document.getElementById("chat-toggle").addEventListener("click", () => {
@@ -375,35 +339,30 @@ body {
     document.getElementById("chatbox").style.display = "none";
   });
 
+  let messageCount = 0;
   function appendMessage(message, sender) {
     const chatBody = document.getElementById("chat-body");
-    const newMessage = document.createElement("div");
-    newMessage.classList.add("chat-message", sender === "User" ? "user-message" : "bot-message");
-    newMessage.textContent = message;
-    chatBody.appendChild(newMessage);
+    const msgDiv = document.createElement("div");
+    msgDiv.classList.add("chat-message", sender === "User" ? "user-message" : "bot-message");
+    msgDiv.textContent = message;
+    chatBody.appendChild(msgDiv);
     chatBody.scrollTop = chatBody.scrollHeight;
-    if (messageCount > 3) {
-      const firstMessage = chatBody.querySelector('.chat-message');
-      chatBody.removeChild(firstMessage);
-    } else {
-      messageCount++;
-    }
+    if (messageCount > 3) chatBody.removeChild(chatBody.querySelector('.chat-message'));
+    else messageCount++;
   }
 
   document.getElementById("chat-submit").addEventListener("click", () => {
-    const userInput = document.getElementById("chat-input").value.trim();
-    if (userInput) {
-      appendMessage(userInput, "User");
-      const botReply = getResponse(userInput);
-      appendMessage(botReply, "Bot");
+    const input = document.getElementById("chat-input").value.trim();
+    if (input) {
+      appendMessage(input, "User");
+      const reply = getResponse(input);
+      setTimeout(() => appendMessage(reply, "Bot"), 300);
       document.getElementById("chat-input").value = '';
     }
   });
 
   document.getElementById("chat-input").addEventListener("keypress", (e) => {
-    if (e.key === "Enter") {
-      document.getElementById("chat-submit").click();
-    }
+    if (e.key === "Enter") document.getElementById("chat-submit").click();
   });
 </script>
 
