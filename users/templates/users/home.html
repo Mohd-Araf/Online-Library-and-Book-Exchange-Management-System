@@ -40,117 +40,371 @@
         </div>
         <div class="col-md-4">
             <div class="feature-card">
-                <h3> Fast & Simple</h3>
+                <h3>Fast & Simple</h3>
                 <p>Seamless login and instant access to your favorite reads.</p>
             </div>
         </div>
     </div>
 </div>
+
+<!-- 🌟 Chat Toggle Button -->
+<button id="chat-toggle">💬 Chat</button>
+
+<!-- 🌟 Chatbot UI -->
+<div id="chatbox" style="display: none;">
+  <div class="chat-header">
+    <img src="https://admission.uap-bd.edu/ApplicationDocs/Institute/UAP_banner.png" alt="UAP Logo" style="width: 30px; height: 30px; margin-right: 10px;">
+    UAP Library Chatbot
+    <button id="chat-close" class="chat-close-btn">❌</button>
+  </div>
+  <div class="chat-body" id="chat-body">
+    <div id="chat-response" class="chat-message bot-message">Hi! Ask me anything about the library or university.</div>
+  </div>
+  <div class="chat-footer">
+    <input id="chat-input" type="text" placeholder="Type your question..." />
+    <button id="chat-submit">Send</button>
+  </div>
+</div>
+
 <style>
-    /* Body */
-    body {
-        background: linear-gradient(135deg, #0f172a, #1e3a8a);
-        color: #f8fafc;
-        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-    }
+    /* ===========================
+   Home Page Styles
+=========================== */
+body {
+    background: linear-gradient(135deg, #0f172a, #1e3a8a);
+    color: #f8fafc;
+    font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+}
 
-    /* Jumbotron */
-    .custom-jumbotron {
-        background: rgba(255, 255, 255, 0.08);
-        border-radius: 18px;
-        padding: 50px;
-        box-shadow: 0 10px 25px rgba(0,0,0,0.3);
-        animation: fadeIn 1.5s ease-in-out;
-        text-align: center;
-        color: #f8fafc;
-    }
+/* Jumbotron */
+.custom-jumbotron {
+    background: rgba(255, 255, 255, 0.08);
+    border-radius: 18px;
+    padding: 50px;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.3);
+    animation: fadeIn 1.5s ease-in-out;
+    text-align: center;
+    color: #f8fafc;
+}
 
-    /* Animated Heading */
-    .custom-jumbotron h1 {
-        font-weight: 700;
-        font-size: 2.8rem;
-        background: linear-gradient(to right, #60a5fa, #3b82f6, #2563eb);
-        -webkit-background-clip: text;
-        -webkit-text-fill-color: transparent;
-        display: inline-block;
-        animation: textGlow 2.5s ease-in-out infinite alternate;
-    }
+.custom-jumbotron h1 {
+    font-weight: 700;
+    font-size: 2.8rem;
+    background: linear-gradient(to right, #60a5fa, #3b82f6, #2563eb);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
+    display: inline-block;
+    animation: textGlow 2.5s ease-in-out infinite alternate;
+}
 
-    .lead {
-        font-size: 1.15rem;
-        color: #dbeafe;
-        animation: fadeInUp 1.8s ease-in-out;
-    }
+.lead {
+    font-size: 1.15rem;
+    color: #dbeafe;
+    animation: fadeInUp 1.8s ease-in-out;
+}
 
-    /* Search Box */
-    .input-group .form-control {
-        border-radius: 30px 0 0 30px;
-        max-width: 400px;
-    }
-    .input-group .btn-custom {
-        border-radius: 0 30px 30px 0;
-    }
-    /* Search Box */
-    .input-group .form-control {
-        border-radius: 30px 0 0 30px;
-        max-width: 400px;
-        border: 2px solid #3b82f6; /* Blue border */
-        background-color: rgba(59, 130, 246, 0.1); /* Light blue background */
-        color: #ffffff; /* Text color */
-    }
-    .input-group .form-control::placeholder {
-        color: #dbeafe; /* Placeholder color */
-    }
-    .input-group .btn-custom {
-        border-radius: 0 30px 30px 0;
-        background-color: #3b82f6; /* Blue button */
-        border: 2px solid #3b82f6;
-        color: #ffffff;
-        font-weight: 600;
-        transition: background-color 0.3s, transform 0.3s;
-    }
-    .input-group .btn-custom:hover {
-        background-color: #2563eb; /* Darker blue on hover */
-        transform: translateY(-2px);
-    }
+/* Search Bar */
+.input-group .form-control {
+    border-radius: 30px 0 0 30px;
+    max-width: 400px;
+    border: 2px solid #3b82f6;
+    background-color: rgba(59, 130, 246, 0.1);
+    color: #ffffff;
+}
 
+.input-group .form-control::placeholder {
+    color: #dbeafe;
+}
 
-    /* Feature Section */
-    .features {
-        margin-top: 60px;
-    }
-    .feature-card {
-        background: rgba(255, 255, 255, 0.1);
-        border-radius: 14px;
-        padding: 30px;
-        transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
-        text-align: center;
-        box-shadow: 0 5px 20px rgba(0,0,0,0.2);
-    }
-    .feature-card h3 {
-        color: #60a5fa;
-        margin-bottom: 12px;
-    }
-    .feature-card p {
-        color: #e2e8f0;
-    }
-    .feature-card:hover {
-        transform: translateY(-10px);
-        box-shadow: 0 8px 25px rgba(0,0,0,0.3);
-    }
+.input-group .btn-custom {
+    border-radius: 0 30px 30px 0;
+    background-color: #3b82f6;
+    border: 2px solid #3b82f6;
+    color: #ffffff;
+    font-weight: 600;
+    transition: background-color 0.3s, transform 0.3s;
+}
 
-    /* Animations */
-    @keyframes fadeIn {
-        from {opacity: 0;}
-        to {opacity: 1;}
-    }
-    @keyframes fadeInUp {
-        from {transform: translateY(25px); opacity: 0;}
-        to {transform: translateY(0); opacity: 1;}
-    }
-    @keyframes textGlow {
-        from { text-shadow: 0 0 10px #3b82f6, 0 0 20px #2563eb; }
-        to { text-shadow: 0 0 20px #60a5fa, 0 0 30px #3b82f6; }
-    }
+.input-group .btn-custom:hover {
+    background-color: #2563eb;
+    transform: translateY(-2px);
+}
+
+/* Feature Cards */
+.features {
+    margin-top: 60px;
+}
+
+.feature-card {
+    background: rgba(255, 255, 255, 0.1);
+    border-radius: 14px;
+    padding: 30px;
+    transition: transform 0.3s ease-in-out, box-shadow 0.3s ease-in-out;
+    text-align: center;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.2);
+}
+
+.feature-card h3 {
+    color: #60a5fa;
+    margin-bottom: 12px;
+}
+
+.feature-card p {
+    color: #e2e8f0;
+}
+
+.feature-card:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+}
+
+/* ===========================
+   Chat Styles
+=========================== */
+#chat-toggle {
+    position: fixed;
+    bottom: 25px;
+    right: 25px;
+    background: #ff6f61;
+    color: white;
+    border: none;
+    border-radius: 50%;
+    padding: 12px 18px;
+    font-size: 16px;
+    font-weight: bold;
+    cursor: pointer;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.3);
+    transition: background 0.3s ease;
+    z-index: 999;
+}
+
+#chat-toggle:hover {
+    background: #ff3b2e;
+}
+
+#chatbox {
+    position: fixed;
+    bottom: 80px;
+    right: 25px;
+    width: 340px;
+    background: #fff;
+    border-radius: 20px;
+    box-shadow: 0 10px 20px rgba(0, 0, 0, 0.1);
+    font-family: 'Segoe UI', sans-serif;
+    z-index: 999;
+    animation: slideIn 0.4s ease;
+    display: flex;
+    flex-direction: column;
+    height: 500px;
+}
+
+/* Chat Header */
+.chat-header {
+    background: linear-gradient(45deg, #37048e, #d000ff);
+    color: white;
+    padding: 15px;
+    font-weight: bold;
+    font-size: 16px;
+    text-align: center;
+    border-radius: 20px 20px 0 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    display: flex;
+    justify-content: space-between;
+    align-items: center;
+}
+
+.chat-close-btn {
+    background: none;
+    border: none;
+    color: white;
+    font-size: 20px;
+    cursor: pointer;
+    padding: 0;
+    margin-right: 10px;
+}
+
+.chat-close-btn:hover {
+    color: #ff3b2e;
+}
+
+/* Chat Body */
+.chat-body {
+    padding: 15px;
+    background: #f1f1f1;
+    flex-grow: 1;
+    overflow-y: auto;
+    max-height: 350px;
+    border-radius: 0 0 20px 20px;
+    display: flex;
+    flex-direction: column;
+    justify-content: flex-end;
+}
+
+.chat-message {
+    font-size: 14px;
+    color: #333;
+    margin-bottom: 12px;
+    max-width: 70%;
+    padding: 12px 18px;
+    border-radius: 20px;
+    word-wrap: break-word;
+    animation: fadeIn 0.5s ease;
+}
+
+.bot-message {
+    background: #f0f4f7;
+    align-self: flex-start;
+    margin-right: auto;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+.user-message {
+    background: #4caf50;
+    color: white;
+    align-self: flex-end;
+    margin-left: auto;
+    box-shadow: 0 2px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Chat Input */
+#chat-input {
+    width: calc(100% - 20px);
+    padding: 12px 18px;
+    border: none;
+    border-radius: 20px;
+    background: #ffffff;
+    margin: 10px;
+    outline: none;
+    font-size: 14px;
+    color: #333;
+    box-shadow: 0 2px 5px rgba(0, 0, 0, 0.1);
+}
+
+#chat-submit {
+    background: #4caf50;
+    color: white;
+    border: none;
+    border-radius: 50px;
+    padding: 12px 18px;
+    font-weight: bold;
+    cursor: pointer;
+    width: 100%;
+    margin-bottom: 15px;
+    transition: background 0.3s ease;
+}
+
+#chat-submit:hover {
+    background: #388e3c;
+}
+
+/* Chat Footer */
+.chat-footer {
+    display: flex;
+    flex-direction: column;
+    justify-content: space-between;
+    padding: 10px;
+    background: #ffffff;
+    border-top: 1px solid #ddd;
+    position: sticky;
+    bottom: 0;
+    z-index: 1;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.1);
+}
+
+/* ===========================
+   Animations
+=========================== */
+@keyframes slideIn {
+    from { opacity: 0; transform: translateY(20px); }
+    to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes fadeIn {
+    from { opacity: 0; }
+    to { opacity: 1; }
+}
+
+@keyframes fadeInUp {
+    from { transform: translateY(25px); opacity: 0; }
+    to { transform: translateY(0); opacity: 1; }
+}
+
+@keyframes textGlow {
+    from { text-shadow: 0 0 10px #3b82f6, 0 0 20px #2563eb; }
+    to { text-shadow: 0 0 20px #60a5fa, 0 0 30px #3b82f6; }
+}
+
 </style>
+
+<script>
+  const responses = {
+    "hi": "Hello! How can I help you today?",
+    "hello": "Hi there! Need any help regarding the library?",
+    "library timing": "UAP Library is open Sunday to Thursday, 9:00 AM - 9:00 PM. Saturday: 9:00 AM - 5:00 PM.",
+    "rules": "Library rules include: Maintain silence, no food, bring your ID, return books on time.",
+    "location": "The UAP Library is located at 9th floor, A Block, 74/A Green Road, Dhaka.",
+    "contact": "You can contact UAP Library at: library@uap-bd.edu or call +8802-58157091-4 (Ext-952).",
+    "uap website": "Visit UAP's official website: [www.uap-bd.edu](https://www.uap-bd.edu/) for details on programs, departments, and admission.",
+    "uap departments": "UAP offers several programs including Computer Science, Engineering, Architecture, Business, Pharmacy, and more.",
+    "library rules": "Please maintain silence, no food or drinks allowed, carry your student ID, and return books on time.",
+    "uap history": "UAP was established in 1996 and is known for its quality education and commitment to student development.",
+    "library resources": "The UAP Library offers various resources such as books, e-journals, research papers, and a comfortable study environment.",
+    "book borrow": "To borrow books, log into the library system and follow the borrowing process.",
+    "library open": "The library is open Sunday to Thursday, 9:00 AM to 9:00 PM, and on Saturday from 9:00 AM to 5:00 PM."
+  };
+
+  let messageCount = 0;
+
+  function getResponse(input) {
+    const lowerInput = input.toLowerCase();
+    if (responses[lowerInput]) return responses[lowerInput];
+    if (lowerInput.includes("time") || lowerInput.includes("open")) return responses["library timing"];
+    if (lowerInput.includes("rule") || lowerInput.includes("policy")) return responses["rules"];
+    if (lowerInput.includes("where") || lowerInput.includes("location")) return responses["location"];
+    if (lowerInput.includes("library")) return responses["book borrow"];
+    if (lowerInput.includes("uap")) return responses["uap website"];
+    return "Sorry, I didn't understand that. Please ask something about the library or university.";
+  }
+
+  document.getElementById("chat-toggle").addEventListener("click", () => {
+    const chatbox = document.getElementById("chatbox");
+    chatbox.style.display = chatbox.style.display === "none" ? "block" : "none";
+  });
+
+  document.getElementById("chat-close").addEventListener("click", () => {
+    document.getElementById("chatbox").style.display = "none";
+  });
+
+  function appendMessage(message, sender) {
+    const chatBody = document.getElementById("chat-body");
+    const newMessage = document.createElement("div");
+    newMessage.classList.add("chat-message", sender === "User" ? "user-message" : "bot-message");
+    newMessage.textContent = message;
+    chatBody.appendChild(newMessage);
+    chatBody.scrollTop = chatBody.scrollHeight;
+    if (messageCount > 3) {
+      const firstMessage = chatBody.querySelector('.chat-message');
+      chatBody.removeChild(firstMessage);
+    } else {
+      messageCount++;
+    }
+  }
+
+  document.getElementById("chat-submit").addEventListener("click", () => {
+    const userInput = document.getElementById("chat-input").value.trim();
+    if (userInput) {
+      appendMessage(userInput, "User");
+      const botReply = getResponse(userInput);
+      appendMessage(botReply, "Bot");
+      document.getElementById("chat-input").value = '';
+    }
+  });
+
+  document.getElementById("chat-input").addEventListener("keypress", (e) => {
+    if (e.key === "Enter") {
+      document.getElementById("chat-submit").click();
+    }
+  });
+</script>
+
 {% endblock content %}
