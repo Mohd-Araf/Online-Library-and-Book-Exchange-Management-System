@@ -7,6 +7,8 @@ class Profile(models.Model):
 
     avatar = models.ImageField(default='default.jpg', upload_to='profile_images')
     bio = models.TextField(blank=True, null=True)
+    phone = models.CharField(max_length=20, blank=True, null=True)
+    address = models.TextField(blank=True, null=True)
 
     # optional stats (future use)
     total_exchanges = models.PositiveIntegerField(default=0)

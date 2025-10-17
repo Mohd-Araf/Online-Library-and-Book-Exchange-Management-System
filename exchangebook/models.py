@@ -49,7 +49,7 @@ class ExchangeRequest(models.Model):
     def save(self, *args, **kwargs):
 
         self.edition_difference = self.offered_book.edition - self.user_edition
-        adjustment = self.edition_difference * 100
+        adjustment = self.edition_difference * 50
 
         condition_multiplier = {
             'excellent': 1.0,

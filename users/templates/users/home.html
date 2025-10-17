@@ -309,6 +309,7 @@ body {
     "location": "Our office is located in Green Road, Dhaka, Bangladesh.",
     "gmail": "Official email: 22201138@uap-bd.edu",
     "rules": "Rules: Maintain silence, handle books carefully, early delivery and keep your account credentials safe.",
+    "book buy": "You can buy books by going to the 'Buy Book' section, choosing a book, and sending a request to the owner.",
     "book exchange": "You can exchange books by going to the 'Exchange Book' section, choosing a book, and sending a request to the owner.",
     "online library": "This Online Library lets you browse, and exchange books easily from your account.",
     "timing": "Our online services are available 24/7. Physical pickups and returns are open Sunday–Thursday, 9 AM–5 PM.",
@@ -321,7 +322,7 @@ body {
     if (text.includes("contact") || text.includes("number")) return responses["contact"];
     if (text.includes("location") || text.includes("where")) return responses["location"];
     if (text.includes("rule") || text.includes("policy")) return responses["rules"];
-    if (text.includes("borrow")) return responses["borrow book"];
+    if (text.includes("buy")) return responses["book buy"];
     if (text.includes("exchange")) return responses["book exchange"];
     if (text.includes("library") || text.includes("book")) return responses["online library"];
     if (text.includes("time") || text.includes("open")) return responses["timing"];
