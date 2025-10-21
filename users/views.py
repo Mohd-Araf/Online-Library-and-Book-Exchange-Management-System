@@ -12,7 +12,7 @@ from payment.models import Payment
 from .forms import RegisterForm, LoginForm, UpdateUserForm, UpdateProfileForm
 
 def home(request):
-    return render(request, 'users/home.html')
+    return render(request, 'users/index.html')
 
 class RegisterView(View):
     form_class = RegisterForm
