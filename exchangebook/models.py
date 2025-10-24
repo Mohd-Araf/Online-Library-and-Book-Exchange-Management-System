@@ -47,31 +47,38 @@ class ExchangeRequest(models.Model):
     final_payment = models.IntegerField(null=True, blank=True)
 
     def save(self, *args, **kwargs):
+        offered_edition = self.offered_book.edition or 1
+        user_edition = self.user_edition or 1
+        self.edition_difference = offered_edition - user_edition
 
-        self.edition_difference = self.offered_book.edition - self.user_edition
-        adjustment = self.edition_difference * 50
+        base_price = self.offered_book.base_price
+        offered_price = base_price * 0.6  # starting value
 
-        condition_multiplier = {
-            'excellent': 1.0,
-            'fine': 0.9,
-            'not_good': 0.7
+        offered_price -= (base_price * 0.05 * abs(self.edition_difference))
+
+        total_pages = self.offered_book.total_pages or 100
+        missing_percent = (self.pages_missing / total_pages) * 100
+        offered_price -= (base_price * 0.005 * missing_percent)
+
+        condition_adjustment = {
+            "excellent": 0.01,
+            "fine": 0.03,
+            "not_good": 0.05
         }
+        offered_price -= base_price * condition_adjustment.get(self.condition, 0)
 
-        # Calculated price
-        self.calculated_price = int(self.offered_book.base_price * condition_multiplier[self.condition] - adjustment)
+        if offered_price < 0:
+            offered_price = 0
 
+        self.calculated_price = int(offered_price)
 
-        if self.calculated_price < 0:
-            self.calculated_price = 0
-
-
-        self.final_payment = self.requested_book.final_amount() - self.calculated_price
+        requested_price = getattr(self.requested_book, "price", 0)
+        self.final_payment = int(requested_price - offered_price)
 
         super().save(*args, **kwargs)
 
     @property
     def final_payment_for_display(self):
-        """Return positive value of final_payment for display in template"""
         return abs(self.final_payment) if self.final_payment is not None else 0
 
     def __str__(self):
